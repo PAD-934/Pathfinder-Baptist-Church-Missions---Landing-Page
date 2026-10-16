@@ -528,23 +528,6 @@ button {
   justify-content: center;
   flex-wrap: wrap;
 }
-.scroll-hint {
-  margin-top: 72px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  color: rgba(245, 240, 232, 0.35);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-.scroll-line {
-  width: 1px;
-  height: 44px;
-  background: linear-gradient(to bottom, rgba(201, 145, 58, 0.6), transparent);
-}
-
 /* ============================================================
    STATS BAR
    ============================================================ */
@@ -738,6 +721,41 @@ button {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 30px;
 }
+.missionary-load-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 36px;
+}
+.missionary-load-more {
+  min-width: 220px;
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 1px solid var(--border-hi);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--gold);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+.missionary-load-more:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold);
+  background: var(--gold-dim);
+}
+.missionary-load-more:focus-visible {
+  outline: 3px solid rgba(201, 145, 58, 0.3);
+  outline-offset: 3px;
+}
+.missionary-load-more[hidden] {
+  display: none;
+}
 .missionary-card {
   display: flex;
   flex-direction: column;
@@ -760,20 +778,41 @@ button {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  background: #f4eedf;
+  background: #d3dfdd;
 }
-.missionary-photo > img {
+.missionary-photo-trigger {
   position: absolute;
   inset: 0;
+  z-index: 0;
   width: 100%;
   height: 100%;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.missionary-photo-trigger img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s ease;
   object-fit: cover;
   object-position: center top;
+}
+.missionary-card:hover .missionary-photo-trigger img {
+  transform: scale(1.035);
+}
+.missionary-photo-trigger:focus-visible {
+  z-index: 4;
+  outline: 3px solid #f0c76e;
+  outline-offset: -5px;
 }
 .missionary-photo .avatar-initials {
   position: absolute;
   inset: 0;
   font-size: 2.6rem;
+  pointer-events: none;
 }
 .missionary-photo::before {
   content: "";
@@ -782,6 +821,7 @@ button {
   height: 4px;
   background: linear-gradient(90deg, #bd3518, #ec641f);
   z-index: 2;
+  pointer-events: none;
 }
 .missionary-photo::after {
   content: "";
@@ -789,27 +829,30 @@ button {
   inset: 0;
   background: linear-gradient(
     to top,
-    rgba(26, 29, 43, 0.7) 0%,
-    transparent 55%
+    rgba(18, 29, 46, 0.58) 0%,
+    rgba(18, 29, 46, 0.08) 60%,
+    transparent 76%
   );
   z-index: 1;
+  pointer-events: none;
 }
 .missionary-badge {
   position: absolute;
   top: 14px;
   right: 14px;
-  background: #1d2a39;
-  backdrop-filter: blur(8px);
+  z-index: 3;
+  max-width: calc(100% - 28px);
+  padding: 8px 14px;
   border: 1px solid rgba(214, 160, 43, 0.45);
   border-radius: 999px;
-  padding: 8px 14px;
+  background: rgba(29, 42, 57, 0.96);
+  color: #dfa928;
   font-size: 10px;
   font-weight: 700;
-  color: #dfa928;
   letter-spacing: 0.08em;
+  text-align: center;
   text-transform: uppercase;
   box-shadow: 0 6px 18px rgba(19, 28, 39, 0.2);
-  z-index: 3;
 }
 .missionary-details {
   display: flex;
@@ -960,6 +1003,248 @@ button {
 
 .field-story-card .missionary-church {
   min-height: 42px;
+}
+
+.missionary-profile-open {
+  overflow: hidden;
+}
+.missionary-profile-trigger {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.missionary-profile-trigger:hover {
+  color: var(--gold);
+}
+.missionary-profile-trigger:focus-visible,
+.missionary-profile-close:focus-visible,
+.missionary-profile-dialog a:focus-visible,
+.missionary-profile-dialog button:focus-visible {
+  outline: 3px solid var(--gold-l);
+  outline-offset: 3px;
+}
+.missionary-profile-dialog {
+  width: min(740px, calc(100vw - 32px));
+  max-width: none;
+  max-height: min(88vh, 800px);
+  max-height: min(88dvh, 800px);
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(226, 184, 105, 0.3);
+  border-radius: 18px;
+  background: #111d30;
+  color: #f7f3eb;
+  box-shadow: 0 28px 100px rgba(0, 0, 0, 0.56);
+}
+.missionary-profile-dialog::backdrop {
+  background: rgba(5, 10, 19, 0.8);
+  backdrop-filter: blur(7px);
+}
+.missionary-profile-hero {
+  position: relative;
+  overflow: hidden;
+  height: clamp(280px, 42vw, 350px);
+  background: #172438;
+}
+.missionary-profile-hero > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+.missionary-profile-hero::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(8, 14, 24, 0.06) 28%,
+    rgba(8, 14, 24, 0.25) 51%,
+    rgba(8, 14, 24, 0.94) 100%
+  );
+  content: "";
+  pointer-events: none;
+}
+.missionary-profile-hero-copy {
+  position: absolute;
+  z-index: 1;
+  right: 28px;
+  bottom: 23px;
+  left: 28px;
+  display: grid;
+  gap: 6px;
+}
+.missionary-profile-role {
+  margin: 0;
+  color: #f1ca79;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.missionary-profile-hero-copy h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: clamp(1.65rem, 5vw, 2.45rem);
+  line-height: 1.12;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+}
+.missionary-profile-close {
+  position: absolute;
+  z-index: 3;
+  top: 14px;
+  right: 14px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.48);
+  border-radius: 50%;
+  background: rgba(18, 29, 46, 0.78);
+  color: #fff;
+  font-size: 27px;
+  line-height: 1;
+  cursor: pointer;
+}
+.missionary-profile-state {
+  width: fit-content;
+  padding: 4px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 999px;
+  background: rgba(14, 24, 39, 0.58);
+  color: #f0c76e;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.missionary-profile-content {
+  padding: 22px 28px 28px;
+}
+.missionary-profile-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-bottom: 16px;
+}
+.missionary-profile-chip {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid rgba(226, 184, 105, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.055);
+  color: #eee9df;
+  font-size: 12px;
+  line-height: 1.35;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.missionary-profile-chip::before {
+  color: #e4ba64;
+  font-size: 14px;
+}
+.missionary-profile-church::before {
+  content: "✦";
+}
+#missionaryProfilePhone::before {
+  content: "☎";
+}
+#missionaryProfilePhone:hover {
+  border-color: rgba(226, 184, 105, 0.6);
+  background: rgba(255, 255, 255, 0.1);
+}
+.missionary-profile-content .missionary-location-detail {
+  margin: 0 0 20px;
+  color: #c7cbd2;
+}
+.missionary-profile-content .missionary-location-detail svg {
+  color: #e4ba64;
+}
+.missionary-profile-prayer {
+  padding: 19px 20px;
+  border: 1px solid rgba(226, 184, 105, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.045);
+}
+.missionary-profile-prayer h3 {
+  margin: 0 0 5px;
+  color: #f0c76e;
+  font-family: var(--serif);
+  font-size: 19px;
+}
+.missionary-profile-prayer > p {
+  margin: 0 0 12px;
+  color: #c7cbd2;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.missionary-profile-prayer ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.missionary-profile-prayer li {
+  position: relative;
+  padding-left: 21px;
+  color: #e2e3e5;
+  font-size: 13px;
+  line-height: 1.55;
+}
+.missionary-profile-prayer li::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #e4ba64;
+  content: "✦";
+}
+.missionary-profile-note {
+  margin: 13px 0 18px;
+  color: #aeb5c0;
+  font-size: 11px;
+  line-height: 1.55;
+}
+.missionary-profile-give {
+  min-height: 45px;
+  padding: 0 21px;
+}
+@media (max-width: 540px) {
+  .missionary-profile-dialog {
+    width: calc(100vw - 20px);
+    max-height: 92dvh;
+    border-radius: 14px;
+  }
+  .missionary-profile-hero {
+    height: 250px;
+  }
+  .missionary-profile-hero-copy {
+    right: 20px;
+    bottom: 19px;
+    left: 20px;
+  }
+  .missionary-profile-content {
+    padding: 18px 20px 22px;
+  }
+  .missionary-profile-meta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .missionary-profile-chip {
+    border-radius: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .missionary-profile-dialog {
+    scroll-behavior: auto;
+  }
 }
 
 /* ============================================================
@@ -1283,90 +1568,132 @@ button {
    FOOTER
    ============================================================ */
 .site-footer {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: clamp(48px, 8vw, 80px) 24px 32px;
+  background: #0d0904;
+  border-top: 1px solid rgba(224, 171, 69, 0.22);
+  padding: clamp(64px, 8vw, 96px) 24px 40px;
+  color: #d5d3d0;
 }
 .footer-inner {
-  max-width: 1100px;
+  max-width: 1380px;
   margin: 0 auto;
 }
 .footer-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 48px;
-  margin-bottom: 56px;
+  grid-template-columns: 1.1fr 1.05fr 1.25fr 1.1fr;
+  gap: clamp(28px, 4vw, 64px);
+  margin-bottom: clamp(56px, 7vw, 80px);
 }
 .footer-brand-row {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 18px;
+  gap: 15px;
+  margin-bottom: 24px;
+}
+.footer-logo {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  object-fit: cover;
+  border: 2px solid rgba(255, 255, 255, 0.92);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
+}
+.footer-brand .brand-name {
+  color: #f7f4ed;
+  font-size: 16px;
+}
+.footer-brand .brand-sub-gold {
+  margin-top: 2px;
+  color: #e5a32d;
+  font-size: 12px;
 }
 .footer-tagline {
-  font-size: 13px;
-  color: var(--muted);
+  max-width: 290px;
+  color: #a5a5ad;
+  font-size: 15px;
   line-height: 1.75;
-  max-width: 220px;
   margin: 0;
 }
 .footer-links h4,
 .footer-contact h4,
 .footer-mandate h4 {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
-  color: var(--gold);
-  letter-spacing: 0.14em;
+  color: #e5a32d;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
-  margin: 0 0 18px;
+  margin: 0 0 22px;
 }
 .footer-links a {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  color: rgba(245, 240, 232, 0.58);
+  gap: 10px;
+  width: fit-content;
+  margin-bottom: 12px;
+  color: #b4b4bc;
+  font-size: 15px;
   text-decoration: none;
-  margin-bottom: 11px;
-  transition: color 0.2s;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+.footer-links a::before {
+  color: #e5a32d;
+  content: "›";
+  font-size: 16px;
+  line-height: 1;
 }
 .footer-links a:hover {
-  color: var(--gold);
+  color: #f7f4ed;
+  transform: translateX(2px);
 }
 .footer-contact-row {
   display: flex;
-  gap: 10px;
+  gap: 13px;
   align-items: flex-start;
-  margin-bottom: 14px;
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.65;
+  margin-bottom: 18px;
+  color: #b4b4bc;
+  font-size: 15px;
+  line-height: 1.7;
 }
 .footer-contact-row:last-child {
   margin-bottom: 0;
-  align-items: center;
+  align-items: flex-start;
+}
+.footer-contact-row svg {
+  flex: 0 0 15px;
+  margin-top: 4px;
+  color: #e5a32d;
+}
+.footer-contact-row a {
+  color: #e5a32d;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+.footer-contact-row a:hover {
+  color: #f1bd59;
+  text-decoration: underline;
 }
 .footer-mandate blockquote {
   font-family: var(--serif);
-  font-size: 15px;
+  font-size: 16px;
   font-style: italic;
-  color: rgba(245, 240, 232, 0.72);
-  line-height: 1.8;
-  border-left: 2px solid rgba(201, 145, 58, 0.4);
-  padding-left: 16px;
+  color: #d6d2cc;
+  line-height: 1.75;
+  border-left: 2px solid #d99a2b;
+  padding-left: 18px;
   margin: 0;
 }
 .mandate-ref {
   font-size: 13px;
-  color: var(--gold);
+  color: #e5a32d;
   font-weight: 700;
-  padding-left: 18px;
+  padding-left: 20px;
   margin-top: 10px;
 }
 
 .footer-bottom {
-  border-top: 1px solid var(--border);
-  padding-top: 24px;
+  border-top: 1px solid rgba(224, 171, 69, 0.2);
+  padding-top: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -1374,9 +1701,18 @@ button {
   gap: 14px;
 }
 .footer-bottom p {
-  font-size: 12px;
-  color: var(--muted);
+  color: #92939d;
+  font-size: 13px;
   margin: 0;
+}
+.footer-bottom .btn-gold {
+  min-width: 130px;
+  padding: 13px 22px;
+  background: linear-gradient(135deg, #d99b31, #edb943);
+  color: #161821;
+}
+.footer-bottom .btn-gold:hover {
+  background: linear-gradient(135deg, #e5aa3d, #f2c65c);
 }
 
 /* ---------- tri-fold light theme ---------- */
@@ -1392,9 +1728,6 @@ button {
 .btn-outline {
   color: #f5f0e8;
   border-color: rgba(245, 240, 232, 0.22);
-}
-.scroll-hint {
-  color: rgba(245, 240, 232, 0.35);
 }
 .brand-name,
 .hamburger {
@@ -1416,9 +1749,6 @@ button {
 }
 .missionaries-section {
   background: #ffffff;
-}
-.site-footer {
-  background: #e8dfcf;
 }
 .missionary-photo {
   background: #d3dfdd;
@@ -1474,21 +1804,16 @@ button {
 .missionary-photo::after {
   background: linear-gradient(
     to top,
-    rgba(18, 29, 46, 0.55) 0%,
-    transparent 60%
+    rgba(18, 29, 46, 0.5) 0%,
+    rgba(18, 29, 46, 0.06) 60%,
+    transparent 76%
   );
-}
-.missionary-badge {
-  background: rgba(29, 42, 57, 0.96);
 }
 .body-text,
 .step-body,
 .info-note p,
 .ng-card p,
-.pray-body,
-.footer-tagline,
-.footer-links a,
-.footer-contact-row {
+.pray-body {
   color: rgba(59, 40, 29, 0.7);
 }
 .missionary-church,
@@ -1532,6 +1857,10 @@ button {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
   }
+  .footer-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 44px 36px;
+  }
 }
 
 @media (max-width: 767px) {
@@ -1563,6 +1892,7 @@ button {
   .missionary-badge {
     top: 8px;
     right: 8px;
+    max-width: calc(100% - 16px);
     padding: 6px 10px;
     font-size: 9px;
   }
@@ -1580,5 +1910,31 @@ button {
   .missionary-give-btn {
     width: 100%;
     min-height: 44px;
+  }
+}
+
+@media (max-width: 540px) {
+  .site-footer {
+    padding: 56px 22px 28px;
+  }
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 34px;
+    margin-bottom: 44px;
+  }
+  .footer-brand-row {
+    margin-bottom: 18px;
+  }
+  .footer-links h4,
+  .footer-contact h4,
+  .footer-mandate h4 {
+    margin-bottom: 14px;
+  }
+  .footer-bottom {
+    align-items: flex-start;
+    flex-direction: column-reverse;
+  }
+  .footer-bottom .btn-gold {
+    width: 100%;
   }
 }
