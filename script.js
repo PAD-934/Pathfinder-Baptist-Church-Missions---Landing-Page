@@ -1,6 +1,162 @@
 // Pathfinder Baptist Missions — Site Script
 
 document.addEventListener("DOMContentLoaded", () => {
+  const missionCarousel = document.getElementById("missionCarousel");
+  const missionTrack = document.getElementById("missionCarouselTrack");
+  const missionPrevious = document.getElementById("missionPrevious");
+  const missionNext = document.getElementById("missionNext");
+  const missionStatus = document.getElementById("missionCarouselStatus");
+
+  if (
+    missionCarousel &&
+    missionTrack &&
+    missionPrevious &&
+    missionNext &&
+    missionStatus
+  ) {
+    const missionCarouselInteractionArea = missionCarousel.parentElement;
+    const missionSlides = [...missionTrack.querySelectorAll(".mission-slide")];
+    const missionDots = [
+      ...missionCarousel.parentElement.querySelectorAll(
+        ".mission-carousel-dot",
+      ),
+    ];
+    const missionCurrent = missionStatus.querySelector(
+      ".mission-carousel-current",
+    );
+    const pauseReasons = new Set();
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    );
+    let activeMissionSlide = 0;
+    let missionTimer;
+    let isCarouselVisible = !("IntersectionObserver" in window);
+    let touchStartX;
+
+    function syncMissionAutoplay() {
+      window.clearInterval(missionTimer);
+      if (
+        reducedMotion.matches ||
+        pauseReasons.size ||
+        !isCarouselVisible ||
+        document.hidden ||
+        missionSlides.length < 2
+      ) {
+        return;
+      }
+      missionTimer = window.setInterval(() => {
+        setActiveMissionSlide(activeMissionSlide + 1);
+      }, 7000);
+    }
+
+    function setActiveMissionSlide(index) {
+      activeMissionSlide =
+        (index + missionSlides.length) % missionSlides.length;
+      missionTrack.style.transform = `translate3d(-${activeMissionSlide * 100}%, 0, 0)`;
+
+      missionSlides.forEach((slide, slideIndex) => {
+        const isActive = slideIndex === activeMissionSlide;
+        slide.setAttribute("aria-hidden", String(!isActive));
+        slide.inert = !isActive;
+      });
+      missionDots.forEach((dot, dotIndex) => {
+        const isActive = dotIndex === activeMissionSlide;
+        dot.classList.toggle("is-active", isActive);
+        dot.setAttribute("aria-pressed", String(isActive));
+      });
+      if (missionCurrent) {
+        missionCurrent.textContent = String(activeMissionSlide + 1).padStart(
+          2,
+          "0",
+        );
+      }
+      missionStatus.setAttribute(
+        "aria-label",
+        `Slide ${activeMissionSlide + 1} of ${missionSlides.length}`,
+      );
+    }
+
+    function pauseMissionAutoplay(reason) {
+      pauseReasons.add(reason);
+      syncMissionAutoplay();
+    }
+
+    function resumeMissionAutoplay(reason) {
+      pauseReasons.delete(reason);
+      syncMissionAutoplay();
+    }
+
+    missionPrevious.addEventListener("click", () =>
+      setActiveMissionSlide(activeMissionSlide - 1),
+    );
+    missionNext.addEventListener("click", () =>
+      setActiveMissionSlide(activeMissionSlide + 1),
+    );
+    missionDots.forEach((dot, index) => {
+      dot.addEventListener("click", () => setActiveMissionSlide(index));
+    });
+    missionCarouselInteractionArea.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        setActiveMissionSlide(activeMissionSlide - 1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        setActiveMissionSlide(activeMissionSlide + 1);
+      }
+    });
+    missionCarouselInteractionArea.addEventListener("mouseenter", () =>
+      pauseMissionAutoplay("pointer"),
+    );
+    missionCarouselInteractionArea.addEventListener("mouseleave", () =>
+      resumeMissionAutoplay("pointer"),
+    );
+    missionCarouselInteractionArea.addEventListener("focusin", () =>
+      pauseMissionAutoplay("focus"),
+    );
+    missionCarouselInteractionArea.addEventListener("focusout", (event) => {
+      if (!missionCarouselInteractionArea.contains(event.relatedTarget)) {
+        resumeMissionAutoplay("focus");
+      }
+    });
+    missionCarouselInteractionArea.addEventListener("pointerdown", (event) => {
+      if (event.pointerType !== "touch") return;
+      touchStartX = event.clientX;
+      pauseMissionAutoplay("touch");
+    });
+    missionCarouselInteractionArea.addEventListener("pointerup", (event) => {
+      if (touchStartX === undefined) return;
+      const swipeDistance = event.clientX - touchStartX;
+      touchStartX = undefined;
+      if (Math.abs(swipeDistance) >= 48) {
+        setActiveMissionSlide(
+          activeMissionSlide + (swipeDistance < 0 ? 1 : -1),
+        );
+      }
+      resumeMissionAutoplay("touch");
+    });
+    missionCarouselInteractionArea.addEventListener("pointercancel", () => {
+      touchStartX = undefined;
+      resumeMissionAutoplay("touch");
+    });
+    document.addEventListener("visibilitychange", syncMissionAutoplay);
+    reducedMotion.addEventListener("change", syncMissionAutoplay);
+
+    if ("IntersectionObserver" in window) {
+      const carouselVisibilityObserver = new IntersectionObserver(
+        ([entry]) => {
+          isCarouselVisible = entry.isIntersecting;
+          syncMissionAutoplay();
+        },
+        { threshold: 0.15 },
+      );
+      carouselVisibilityObserver.observe(missionCarousel);
+    }
+
+    setActiveMissionSlide(0);
+    syncMissionAutoplay();
+  }
+
   const MISSIONARIES = [
     {
       id: 1,

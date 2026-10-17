@@ -574,16 +574,77 @@ button {
    MISSION + DIRECTOR
    ============================================================ */
 .mission-section {
-  padding: clamp(60px, 12vw, 120px) 24px;
+  padding: clamp(28px, 3vw, 42px) clamp(20px, 3vw, 48px);
   background: var(--bg);
+  scroll-margin-top: 92px;
 }
-.mission-inner {
-  max-width: 1100px;
+.mission-carousel-wrap {
+  max-width: 1120px;
   margin: 0 auto;
+}
+.mission-carousel {
+  overflow: hidden;
+  border: 1px solid rgba(184, 119, 42, 0.28);
+  border-radius: 22px;
+  background: var(--card);
+  touch-action: pan-y;
+  box-shadow:
+    0 28px 70px rgba(54, 39, 27, 0.09),
+    0 3px 10px rgba(54, 39, 27, 0.04);
+}
+.mission-carousel:focus-visible {
+  outline: 3px solid rgba(184, 119, 42, 0.5);
+  outline-offset: 5px;
+}
+.mission-carousel-track {
+  display: flex;
+  transition: transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.mission-slide {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 72px;
-  align-items: center;
+  flex: 0 0 100%;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  height: 480px;
+  min-height: 0;
+  background: var(--card);
+}
+.mission-slide-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: clamp(24px, 3vw, 38px);
+}
+.mission-slide-title {
+  max-width: 800px;
+  margin: 0 0 14px;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: clamp(1.75rem, 2.6vw, 2.25rem);
+  font-weight: 700;
+  line-height: 1.13;
+  letter-spacing: -0.035em;
+}
+.mission-slide .gold-divider {
+  margin-bottom: 16px;
+}
+.mission-slide-subtitle {
+  margin: 0 0 10px;
+  color: var(--text);
+  font-size: 15px;
+  font-weight: 700;
+}
+.mission-slide .body-text {
+  max-width: 800px;
+  margin: 0 0 12px;
+  color: rgba(59, 40, 29, 0.72);
+  font-size: 14.5px;
+  line-height: 1.6;
+}
+.mission-slide .tag-row {
+  gap: 8px;
+  margin-top: 4px;
 }
 .tag-row {
   display: flex;
@@ -591,59 +652,179 @@ button {
   flex-wrap: wrap;
 }
 .tag {
-  padding: 8px 16px;
+  padding: 7px 12px;
   background: var(--gold-dim);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 999px;
   font-size: 12px;
   color: var(--gold);
   font-weight: 700;
   letter-spacing: 0.04em;
 }
-
-.director-card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.4);
-}
-.director-photo {
-  position: relative;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  background: #0e1018;
-}
-.director-body {
-  padding: 24px 28px 28px;
-}
-.director-name {
-  font-family: var(--serif);
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--text);
-  margin: 0 0 10px;
-}
-.director-bio {
+.mission-slide-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 46px;
+  margin: 14px auto 0;
+  padding: 0 24px;
+  border-radius: 999px;
+  background: #2b211b;
+  color: #fffaf0;
   font-size: 14px;
-  color: var(--muted);
-  line-height: 1.75;
-  margin: 0 0 20px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 10px 24px rgba(43, 33, 27, 0.12);
+  transition:
+    transform 180ms ease,
+    background 180ms ease,
+    box-shadow 180ms ease;
 }
-.director-contact {
+.mission-slide-cta:hover {
+  transform: translateY(-2px);
+  background: #4b3425;
+  box-shadow: 0 14px 28px rgba(43, 33, 27, 0.18);
+}
+.mission-slide-cta:focus-visible,
+.mission-carousel-arrow:focus-visible,
+.mission-carousel-dot:focus-visible {
+  outline: 3px solid rgba(184, 119, 42, 0.6);
+  outline-offset: 4px;
+}
+.mission-slide-media {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: #f5f3ee;
+}
+.mission-slide--identity .mission-slide-copy {
+  grid-column: 2;
+  grid-row: 1;
+}
+.mission-slide--identity .mission-slide-media {
+  grid-column: 1;
+  grid-row: 1;
+}
+.mission-slide--identity {
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+}
+.mission-logo-panel {
+  display: grid;
+  place-items: center;
+  padding: clamp(20px, 3vw, 36px);
+  background:
+    radial-gradient(ellipse at center, rgba(255, 255, 255, 0.98), transparent 74%),
+    #f2f3f2;
+}
+.mission-logo-frame {
+  display: grid;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  place-items: center;
+}
+.mission-logo-frame img {
+  width: min(100%, 420px);
+  max-height: 420px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.director-slide-copy {
+  padding-top: clamp(20px, 2vw, 28px);
+  padding-bottom: clamp(20px, 2vw, 28px);
+}
+.director-slide-copy .gold-label {
+  margin-bottom: 8px;
+}
+.director-slide-copy .mission-slide-title {
+  font-family: var(--sans);
+  font-size: clamp(1.45rem, 2vw, 1.8rem);
+  letter-spacing: -0.035em;
+}
+.director-slide-copy .body-text {
+  margin-bottom: 10px;
+}
+.director-slide-copy .mission-slide-cta {
+  min-height: 42px;
+  margin-top: 10px;
+}
+.mission-slide--director {
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+}
+.director-slide-photo img {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  object-fit: cover;
+  object-position: center 22%;
+}
+.mission-carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 18px;
+  border-top: 1px solid var(--border);
+  background: rgba(255, 250, 240, 0.92);
+}
+.mission-carousel-arrow {
+  display: grid;
+  width: 46px;
+  height: 46px;
+  flex: 0 0 auto;
+  place-items: center;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--card);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    color 180ms ease,
+    border-color 180ms ease,
+    background 180ms ease,
+    transform 180ms ease;
+}
+.mission-carousel-arrow:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold);
+  background: var(--gold);
+  color: #fffaf0;
+}
+.mission-carousel-pagination {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
 }
-.director-contact svg,
+.mission-carousel-dot {
+  width: 9px;
+  height: 9px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(59, 40, 29, 0.24);
+  cursor: pointer;
+  transition:
+    width 220ms ease,
+    background 220ms ease;
+}
+.mission-carousel-dot.is-active {
+  width: 28px;
+  background: var(--gold);
+}
+.mission-carousel-status {
+  min-width: 55px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-align: center;
+}
 .footer-contact-row svg,
 .info-note svg {
   color: var(--gold);
   flex-shrink: 0;
 }
-.director-contact a,
 .footer-contact-row a {
   font-size: 13px;
   color: var(--gold);
@@ -684,7 +865,7 @@ button {
 .missionary-controls {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   gap: 12px;
   margin: 0 0 22px;
   color: var(--muted);
@@ -1853,6 +2034,36 @@ button {
 }
 
 @media (max-width: 900px) {
+  .mission-section {
+    padding: 36px 20px;
+  }
+  .mission-slide {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+  }
+  .mission-slide-copy {
+    padding: 34px clamp(24px, 7vw, 42px) 38px;
+  }
+  .mission-logo-panel {
+    min-height: 230px;
+    padding: 16px;
+  }
+  .mission-logo-frame {
+    min-height: 0;
+  }
+  .mission-logo-frame img {
+    max-height: 205px;
+  }
+  .director-slide-photo img {
+    height: 320px;
+    min-height: 0;
+    object-position: center 20%;
+  }
+  .mission-carousel-controls {
+    gap: 12px;
+  }
   .missionary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 22px;
@@ -1882,6 +2093,65 @@ button {
 }
 
 @media (max-width: 600px) {
+  .mission-section {
+    padding: 30px 16px;
+  }
+  .mission-carousel {
+    border-radius: 17px;
+  }
+  .mission-slide-copy {
+    padding: 18px 18px 20px;
+  }
+  .mission-slide-title {
+    margin-bottom: 12px;
+    font-size: clamp(1.6rem, 6.5vw, 1.9rem);
+    line-height: 1.1;
+  }
+  .mission-slide .body-text {
+    margin-bottom: 9px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .mission-slide-subtitle {
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+  .mission-slide .gold-divider {
+    margin-bottom: 14px;
+  }
+  .mission-slide .tag-row {
+    gap: 7px;
+  }
+  .mission-slide .tag {
+    padding: 6px 10px;
+    font-size: 11px;
+  }
+  .mission-slide-cta {
+    min-height: 44px;
+    margin-top: 12px;
+  }
+  .mission-logo-panel {
+    min-height: 132px;
+    padding: 10px;
+  }
+  .mission-logo-frame {
+    min-height: 0;
+  }
+  .mission-logo-frame img {
+    width: min(100%, 112px);
+    max-height: 112px;
+  }
+  .director-slide-photo img {
+    height: 240px;
+  }
+  .mission-carousel-controls {
+    justify-content: center;
+    gap: 14px;
+  }
+  .mission-carousel-arrow {
+    width: 42px;
+    height: 42px;
+  }
   .missionary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
@@ -1910,6 +2180,16 @@ button {
   .missionary-give-btn {
     width: 100%;
     min-height: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mission-carousel-track,
+  .mission-carousel-arrow,
+  .mission-carousel-dot,
+  .mission-slide-cta {
+    scroll-behavior: auto;
+    transition-duration: 0.01ms;
   }
 }
 
