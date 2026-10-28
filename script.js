@@ -488,19 +488,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const locationFilter = document.getElementById("locationFilter");
   const missionaryCount = document.getElementById("missionaryCount");
   const loadMoreButton = document.getElementById("missionaryLoadMore");
-  const profileDialog = document.getElementById("missionaryProfileDialog");
-  const profilePhoto = document.getElementById("missionaryProfilePhoto");
-  const profileName = document.getElementById("missionaryProfileName");
-  const profileChurch = document.getElementById("missionaryProfileChurch");
-  const profileState = document.getElementById("missionaryProfileState");
-  const profileLocation = document.getElementById("missionaryProfileLocation");
-  const profilePhone = document.getElementById("missionaryProfilePhone");
-  const profilePrayer = document.getElementById("missionaryProfilePrayer");
-  const generalPrayerPoints = [
-    "Church growth and open doors to reach people with the Gospel.",
-    "Good health, protection, and provision for the family.",
-    "Wisdom, strength, and encouragement for faithful ministry.",
-  ];
+  const imageDialog = document.getElementById("missionaryImageDialog");
+  const fullImage = document.getElementById("missionaryFullImage");
 
   function prayerBlock() {
     return `<details class="prayer-details">
@@ -544,8 +533,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <button
             class="missionary-photo-trigger"
             type="button"
-            data-missionary-profile="${missionary.id}"
-            aria-label="Open missionary profile for ${missionary.name}"
+            data-missionary-image="${missionary.id}"
+            aria-label="View full image for ${missionary.name}"
             aria-haspopup="dialog"
           >
             <img src="Pictures/${missionary.photo}" alt="" loading="lazy" />
@@ -553,14 +542,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <span class="missionary-badge">${missionary.state}</span>
         </div>
         <div class="missionary-details">
-          <h3 class="missionary-name">
-            <button
-              class="missionary-profile-trigger"
-              type="button"
-              data-missionary-profile="${missionary.id}"
-              aria-haspopup="dialog"
-            >${missionary.name}</button>
-          </h3>
+          <h3 class="missionary-name">${missionary.name}</h3>
           <p class="missionary-church">${missionary.church}</p>
           ${locationBlock(missionary.location)}
           ${prayerBlock()}
@@ -608,82 +590,50 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   grid?.addEventListener("click", (event) => {
-    const trigger = event.target.closest("[data-missionary-profile]");
+    const trigger = event.target.closest("[data-missionary-image]");
     if (!trigger) return;
 
     const missionary = MISSIONARIES.find(
-      (item) => item.id === Number(trigger.dataset.missionaryProfile),
+      (item) => item.id === Number(trigger.dataset.missionaryImage),
     );
     if (!missionary) {
-      console.error("Unable to open profile: missionary was not found.");
+      console.error("Unable to open image: missionary was not found.");
       return;
     }
-    if (
-      !profileDialog ||
-      !profilePhoto ||
-      !profileName ||
-      !profileChurch ||
-      !profileState ||
-      !profileLocation ||
-      !profilePhone ||
-      !profilePrayer
-    ) {
-      console.error("Unable to open profile: profile dialog is incomplete.");
+    if (!imageDialog || !fullImage) {
+      console.error("Unable to open image: image viewer is incomplete.");
       return;
     }
 
-    profilePhoto.src = `Pictures/${missionary.photo}`;
-    profilePhoto.alt = `Missionary prayer and support card for ${missionary.name}`;
-    profileName.textContent = missionary.name;
-    profileChurch.textContent = missionary.church;
-    profileState.textContent = missionary.state;
-    profileLocation.innerHTML = locationBlock(missionary.location);
-    profilePhone.textContent = missionary.phone;
-    profilePhone.href = `tel:${missionary.phone.replace(/[^\d+]/g, "")}`;
-    profilePhone.setAttribute(
-      "aria-label",
-      `Call ${missionary.name} at ${missionary.phone}`,
-    );
-    profilePrayer.replaceChildren(
-      ...generalPrayerPoints.map((request) => {
-        const item = document.createElement("li");
-        item.textContent = request;
-        return item;
-      }),
-    );
-    profileDialog.showModal();
-    document.documentElement.classList.add("missionary-profile-open");
+    fullImage.src = `Pictures/${missionary.photo}`;
+    fullImage.alt = `Full missionary card for ${missionary.name}`;
+    imageDialog.showModal();
+    document.documentElement.classList.add("missionary-image-open");
   });
 
-  function closeProfileDialog() {
-    if (!profileDialog?.open) return;
-    profileDialog.close();
-    document.documentElement.classList.remove("missionary-profile-open");
+  function closeImageDialog() {
+    if (!imageDialog?.open) return;
+    imageDialog.close();
   }
 
-  profileDialog
-    ?.querySelector(".missionary-profile-close")
-    ?.addEventListener("click", closeProfileDialog);
-  profileDialog?.addEventListener("keydown", (event) => {
-    if (event.key !== "Escape") return;
-    event.preventDefault();
-    closeProfileDialog();
+  imageDialog
+    ?.querySelector(".missionary-image-close")
+    ?.addEventListener("click", closeImageDialog);
+  imageDialog?.addEventListener("cancel", () => {
+    document.documentElement.classList.remove("missionary-image-open");
   });
-  profileDialog?.addEventListener("cancel", () => {
-    document.documentElement.classList.remove("missionary-profile-open");
+  imageDialog?.addEventListener("close", () => {
+    document.documentElement.classList.remove("missionary-image-open");
   });
-  profileDialog?.addEventListener("close", () => {
-    document.documentElement.classList.remove("missionary-profile-open");
-  });
-  profileDialog?.addEventListener("click", (event) => {
-    if (event.target !== profileDialog) return;
-    const bounds = profileDialog.getBoundingClientRect();
+  imageDialog?.addEventListener("click", (event) => {
+    if (event.target !== imageDialog) return;
+    const bounds = imageDialog.getBoundingClientRect();
     const isBackdropClick =
       event.clientX < bounds.left ||
       event.clientX > bounds.right ||
       event.clientY < bounds.top ||
       event.clientY > bounds.bottom;
-    if (isBackdropClick) closeProfileDialog();
+    if (isBackdropClick) closeImageDialog();
   });
 
   const navbar = document.getElementById("navbar");

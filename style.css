@@ -1228,244 +1228,67 @@ button {
   min-height: 42px;
 }
 
-.missionary-profile-open {
+.missionary-image-open {
   overflow: hidden;
 }
-.missionary-profile-trigger {
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-.missionary-profile-trigger:hover {
-  color: var(--gold);
-}
-.missionary-profile-trigger:focus-visible,
-.missionary-profile-close:focus-visible,
-.missionary-profile-dialog a:focus-visible,
-.missionary-profile-dialog button:focus-visible {
+.missionary-photo-trigger:focus-visible,
+.missionary-image-close:focus-visible {
   outline: 3px solid var(--gold-l);
   outline-offset: 3px;
 }
-.missionary-profile-dialog {
-  width: min(740px, calc(100vw - 32px));
+.missionary-image-dialog {
+  width: fit-content;
   max-width: none;
-  max-height: min(88vh, 800px);
-  max-height: min(88dvh, 800px);
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
   padding: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  border: 1px solid rgba(226, 184, 105, 0.3);
-  border-radius: 18px;
-  background: #111d30;
-  color: #f7f3eb;
-  box-shadow: 0 28px 100px rgba(0, 0, 0, 0.56);
+  overflow: visible;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55);
 }
-.missionary-profile-dialog::backdrop {
+.missionary-image-dialog::backdrop {
   background: rgba(5, 10, 19, 0.8);
   backdrop-filter: blur(7px);
 }
-.missionary-profile-hero {
+.missionary-image-viewer {
   position: relative;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
   overflow: hidden;
-  height: clamp(280px, 42vw, 350px);
-  background: #172438;
+  border-radius: 10px;
+  background: #111d30;
 }
-.missionary-profile-hero > img {
+.missionary-image-viewer > img {
   display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  width: auto;
+  height: auto;
+  max-width: calc(100vw - 32px);
+  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
+  object-fit: contain;
+  object-position: center;
 }
-.missionary-profile-hero::after {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(8, 14, 24, 0.06) 28%,
-    rgba(8, 14, 24, 0.25) 51%,
-    rgba(8, 14, 24, 0.94) 100%
-  );
-  content: "";
-  pointer-events: none;
-}
-.missionary-profile-hero-copy {
+.missionary-image-close {
   position: absolute;
   z-index: 1;
-  right: 28px;
-  bottom: 23px;
-  left: 28px;
-  display: grid;
-  gap: 6px;
-}
-.missionary-profile-role {
-  margin: 0;
-  color: #f1ca79;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.missionary-profile-hero-copy h2 {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: clamp(1.65rem, 5vw, 2.45rem);
-  line-height: 1.12;
-  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
-}
-.missionary-profile-close {
-  position: absolute;
-  z-index: 3;
-  top: 14px;
-  right: 14px;
+  top: 10px;
+  right: 10px;
   width: 42px;
   height: 42px;
-  border: 1px solid rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(255, 255, 255, 0.55);
   border-radius: 50%;
-  background: rgba(18, 29, 46, 0.78);
+  background: rgba(18, 29, 46, 0.86);
   color: #fff;
   font-size: 27px;
   line-height: 1;
   cursor: pointer;
 }
-.missionary-profile-state {
-  width: fit-content;
-  padding: 4px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  border-radius: 999px;
-  background: rgba(14, 24, 39, 0.58);
-  color: #f0c76e;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.missionary-profile-content {
-  padding: 22px 28px 28px;
-}
-.missionary-profile-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 9px;
-  margin-bottom: 16px;
-}
-.missionary-profile-chip {
-  display: inline-flex;
-  min-height: 38px;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border: 1px solid rgba(226, 184, 105, 0.2);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.055);
-  color: #eee9df;
-  font-size: 12px;
-  line-height: 1.35;
-  text-decoration: none;
-  overflow-wrap: anywhere;
-}
-.missionary-profile-chip::before {
-  color: #e4ba64;
-  font-size: 14px;
-}
-.missionary-profile-church::before {
-  content: "✦";
-}
-#missionaryProfilePhone::before {
-  content: "☎";
-}
-#missionaryProfilePhone:hover {
-  border-color: rgba(226, 184, 105, 0.6);
-  background: rgba(255, 255, 255, 0.1);
-}
-.missionary-profile-content .missionary-location-detail {
-  margin: 0 0 20px;
-  color: #c7cbd2;
-}
-.missionary-profile-content .missionary-location-detail svg {
-  color: #e4ba64;
-}
-.missionary-profile-prayer {
-  padding: 19px 20px;
-  border: 1px solid rgba(226, 184, 105, 0.2);
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.045);
-}
-.missionary-profile-prayer h3 {
-  margin: 0 0 5px;
-  color: #f0c76e;
-  font-family: var(--serif);
-  font-size: 19px;
-}
-.missionary-profile-prayer > p {
-  margin: 0 0 12px;
-  color: #c7cbd2;
-  font-size: 13px;
-  line-height: 1.65;
-}
-.missionary-profile-prayer ul {
-  display: grid;
-  gap: 10px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-.missionary-profile-prayer li {
-  position: relative;
-  padding-left: 21px;
-  color: #e2e3e5;
-  font-size: 13px;
-  line-height: 1.55;
-}
-.missionary-profile-prayer li::before {
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: #e4ba64;
-  content: "✦";
-}
-.missionary-profile-note {
-  margin: 13px 0 18px;
-  color: #aeb5c0;
-  font-size: 11px;
-  line-height: 1.55;
-}
-.missionary-profile-give {
-  min-height: 45px;
-  padding: 0 21px;
-}
-@media (max-width: 540px) {
-  .missionary-profile-dialog {
-    width: calc(100vw - 20px);
-    max-height: 92dvh;
-    border-radius: 14px;
-  }
-  .missionary-profile-hero {
-    height: 250px;
-  }
-  .missionary-profile-hero-copy {
-    right: 20px;
-    bottom: 19px;
-    left: 20px;
-  }
-  .missionary-profile-content {
-    padding: 18px 20px 22px;
-  }
-  .missionary-profile-meta {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .missionary-profile-chip {
-    border-radius: 10px;
-  }
-}
 @media (prefers-reduced-motion: reduce) {
-  .missionary-profile-dialog {
+  .missionary-image-dialog {
     scroll-behavior: auto;
   }
 }
@@ -1976,7 +1799,7 @@ button {
   background: #ffffff;
 }
 .missionary-photo {
-  background: #d3dfdd;
+  background: #fffaf0;
 }
 .missionary-card,
 .give-card,
@@ -2027,12 +1850,7 @@ button {
   box-shadow: 0 20px 50px rgba(69, 47, 31, 0.16);
 }
 .missionary-photo::after {
-  background: linear-gradient(
-    to top,
-    rgba(18, 29, 46, 0.5) 0%,
-    rgba(18, 29, 46, 0.06) 60%,
-    transparent 76%
-  );
+  background: none;
 }
 .body-text,
 .step-body,
@@ -2069,11 +1887,15 @@ button {
 }
 
 @media (min-width: 1600px) {
-  .missionary-card {
-    min-height: 633px;
-  }
   .missionary-photo {
     aspect-ratio: 1.38;
+  }
+}
+
+@media (max-width: 1100px) {
+  .missionary-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
   }
 }
 
@@ -2119,6 +1941,9 @@ button {
 }
 
 @media (max-width: 767px) {
+  .mission-slide-media {
+    order: -1;
+  }
   .missionary-grid {
     gap: 18px;
   }
@@ -2167,14 +1992,20 @@ button {
     padding: 28px 16px;
   }
   .stats-inner {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 20px 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px 4px;
   }
   .stat {
-    padding: 8px 4px;
+    padding: 8px 2px;
   }
   .stat-num {
-    font-size: clamp(2.2rem, 10vw, 3rem);
+    font-size: clamp(1.8rem, 8vw, 2.5rem);
+  }
+  .stat-label {
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+  .stat-sub {
+    font-size: clamp(9px, 2.4vw, 10px);
   }
   .missionaries-section,
   .give-section,
@@ -2220,15 +2051,15 @@ button {
     margin-top: 12px;
   }
   .mission-logo-panel {
-    min-height: 132px;
-    padding: 10px;
+    min-height: 260px;
+    padding: 14px;
   }
   .mission-logo-frame {
     min-height: 0;
   }
   .mission-logo-frame img {
-    width: min(100%, 112px);
-    max-height: 112px;
+    width: min(100%, 232px);
+    max-height: 232px;
   }
   .director-slide-photo img {
     height: 240px;
@@ -2242,7 +2073,7 @@ button {
     height: 42px;
   }
   .missionary-grid {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
   }
   .missionary-photo {
@@ -2379,9 +2210,6 @@ button {
   }
   .missionaries-inner {
     max-width: 1600px;
-  }
-  .missionary-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
 
