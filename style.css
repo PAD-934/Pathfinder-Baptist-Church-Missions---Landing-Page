@@ -385,36 +385,8 @@ button {
   color: var(--gold);
 }
 
-.hamburger {
-  background: none;
-  border: none;
-  color: var(--text);
-  cursor: pointer;
-  padding: 6px;
-  line-height: 0;
-}
-
-.mobile-drawer {
+.mobile-bottom-nav {
   display: none;
-  max-height: calc(100vh - 70px);
-  max-height: calc(100dvh - 70px);
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  padding: 8px 20px 20px;
-}
-.mobile-drawer.open {
-  display: block;
-}
-.mobile-drawer a {
-  display: block;
-  padding: 13px 0;
-  color: rgba(245, 240, 232, 0.8);
-  text-decoration: none;
-  font-size: 16px;
-  font-weight: 500;
-  border-bottom: 1px solid rgba(201, 145, 58, 0.07);
 }
 
 @media (max-width: 480px) {
@@ -447,14 +419,9 @@ button {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  .hamburger {
-    display: grid;
-    flex-shrink: 0;
-    place-items: center;
-    width: 44px;
-    height: 44px;
-    margin-right: -6px;
-    padding: 0;
+  .brand-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }
 
@@ -462,11 +429,71 @@ button {
   .nav-links {
     display: flex;
   }
-  .hamburger {
-    display: none;
+}
+
+@media (max-width: 959px) {
+  body {
+    padding-bottom: calc(74px + env(safe-area-inset-bottom));
   }
-  .mobile-drawer {
-    display: none !important;
+  .navbar-inner {
+    justify-content: flex-start;
+  }
+  .mobile-bottom-nav {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 210;
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    align-items: center;
+    padding: 7px 8px calc(7px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    background: rgba(255, 250, 240, 0.97);
+    box-shadow: 0 -8px 24px rgba(54, 39, 27, 0.1);
+    backdrop-filter: blur(16px);
+  }
+  .mobile-bottom-link,
+  .mobile-bottom-support {
+    display: flex;
+    min-width: 0;
+    min-height: 52px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 8.5px;
+    font-weight: 600;
+    line-height: 1.1;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-bottom-link svg {
+    flex: 0 0 auto;
+  }
+  .mobile-bottom-link:focus-visible,
+  .mobile-bottom-support:focus-visible {
+    border-radius: 12px;
+    outline: 3px solid rgba(184, 119, 42, 0.5);
+    outline-offset: 2px;
+  }
+  .mobile-bottom-support {
+    width: 58px;
+    min-height: 54px;
+    justify-self: center;
+    gap: 3px;
+    border-radius: 16px;
+    background: var(--gold-grad);
+    color: #fffaf0;
+    box-shadow: 0 5px 14px rgba(138, 77, 31, 0.25);
+    font-size: 8px;
+    font-weight: 700;
   }
 }
 
@@ -1119,18 +1146,66 @@ button {
   color: rgba(245, 240, 232, 0.55);
   margin: 0 0 14px;
 }
-.missionary-phone {
+.missionary-phone-copy {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 9px;
+  width: 100%;
   min-width: 0;
-  font-size: 13px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: rgba(184, 119, 42, 0.06);
   color: var(--muted);
-  overflow-wrap: anywhere;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease,
+    box-shadow 0.2s ease;
 }
-.missionary-phone svg {
+.missionary-phone-copy > svg {
   color: var(--muted);
   flex-shrink: 0;
+}
+.missionary-phone-number {
+  min-width: 0;
+  flex: 1;
+  overflow-wrap: anywhere;
+}
+.missionary-copy-indicator {
+  flex: 0 0 auto;
+  color: var(--gold);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.missionary-phone-copy:hover,
+.missionary-phone-copy.is-copied {
+  border-color: var(--border-hi);
+  background: var(--gold-dim);
+  color: var(--text);
+}
+.missionary-phone-copy:focus-visible {
+  outline: 3px solid rgba(184, 119, 42, 0.45);
+  outline-offset: 2px;
+}
+.missionary-phone-copy.is-copied .missionary-copy-indicator {
+  color: #38744c;
+}
+.missionary-copy-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
 }
 .missionary-support-btn {
   width: 100%;
@@ -1147,42 +1222,6 @@ button {
   transition:
     background 0.2s,
     border-color 0.2s;
-}
-.prayer-details {
-  margin: 0 0 18px;
-  border: 1px solid rgba(166, 195, 226, 0.14);
-  border-radius: 9px;
-  background: rgba(255, 255, 255, 0.035);
-}
-.prayer-details summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 14px;
-  color: #f8f0e3;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-  list-style: none;
-}
-.prayer-details summary::-webkit-details-marker {
-  display: none;
-}
-.prayer-details summary span {
-  color: #d49a2e;
-  font-size: 18px;
-  line-height: 1;
-  transition: transform 0.2s ease;
-}
-.prayer-details[open] summary span {
-  transform: rotate(180deg);
-}
-.prayer-details p {
-  margin: 0;
-  padding: 0 14px 13px;
-  color: #a6c3e2;
-  font-size: 12px;
-  line-height: 1.6;
 }
 .missionary-actions {
   display: flex;
@@ -1755,8 +1794,7 @@ button {
   color: #f5f0e8;
   border-color: rgba(245, 240, 232, 0.22);
 }
-.brand-name,
-.hamburger {
+.brand-name {
   color: #f5f0e8;
 }
 .navbar.scrolled {
@@ -1802,17 +1840,6 @@ button {
   min-height: 0;
   color: #8a4d1f;
 }
-.prayer-details {
-  border-color: var(--border);
-  background: #f4eedf;
-}
-.prayer-details summary {
-  color: #3b281d;
-}
-.prayer-details summary span {
-  color: #b97824;
-}
-.prayer-details p,
 .missionary-contact-note {
   color: #756b61;
 }
@@ -1830,8 +1857,16 @@ button {
   color: rgba(59, 40, 29, 0.7);
 }
 .missionary-church,
-.missionary-phone {
+.missionary-phone-copy,
+.missionary-phone-copy > svg {
   color: rgba(59, 40, 29, 0.66);
+}
+.missionary-phone-copy:hover,
+.missionary-phone-copy.is-copied {
+  color: var(--text);
+}
+.missionary-phone-copy .missionary-copy-indicator {
+  color: var(--gold);
 }
 .give-card,
 .ng-card,

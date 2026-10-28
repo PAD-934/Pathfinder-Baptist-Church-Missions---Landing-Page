@@ -491,13 +491,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const imageDialog = document.getElementById("missionaryImageDialog");
   const fullImage = document.getElementById("missionaryFullImage");
 
-  function prayerBlock() {
-    return `<details class="prayer-details">
-      <summary>Prayer Requests <span aria-hidden="true">⌄</span></summary>
-      <p>Pray for wisdom, strength, open doors, and faithful Gospel ministry in this community.</p>
-    </details>`;
-  }
-
   function locationBlock(location) {
     if (!location) return "";
     return `<div class="missionary-location missionary-location-detail">
@@ -545,9 +538,19 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3 class="missionary-name">${missionary.name}</h3>
           <p class="missionary-church">${missionary.church}</p>
           ${locationBlock(missionary.location)}
-          ${prayerBlock()}
           <div class="missionary-actions">
-            <span class="missionary-phone"><svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg><span>${missionary.phone}</span></span>
+            <button
+              class="missionary-phone-copy"
+              type="button"
+              data-copy-phone="${missionary.phone}"
+              aria-label="Copy phone number ${missionary.phone}"
+              title="Copy phone number"
+            >
+              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+              <span class="missionary-phone-number">${missionary.phone}</span>
+              <span class="missionary-copy-indicator" aria-hidden="true">Copy</span>
+            </button>
+            <span class="missionary-copy-status" aria-live="polite"></span>
           </div>
         </div>
       </article>
@@ -586,6 +589,74 @@ document.addEventListener("DOMContentLoaded", () => {
   loadMoreButton?.addEventListener("click", () => {
     visibleMissionaryLimit += missionaryBatchSize;
     renderMissionaries();
+  });
+
+  const phoneCopyTimeouts = new WeakMap();
+  async function copyPhoneNumber(phoneNumber) {
+    if (navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(phoneNumber);
+        return;
+      } catch {
+        // Fall back for browsers or contexts that deny clipboard access.
+      }
+    }
+
+    const textarea = document.createElement("textarea");
+    textarea.value = phoneNumber;
+    textarea.setAttribute("readonly", "");
+    textarea.style.position = "fixed";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.select();
+
+    let copied = false;
+    try {
+      copied = document.execCommand("copy");
+    } finally {
+      textarea.remove();
+    }
+
+    if (!copied) {
+      throw new Error("Clipboard copy was unsuccessful.");
+    }
+  }
+
+  grid?.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-copy-phone]");
+    if (!button) return;
+
+    const status = button
+      .closest(".missionary-actions")
+      ?.querySelector(".missionary-copy-status");
+    const indicator = button.querySelector(".missionary-copy-indicator");
+    const phoneNumber = button.dataset.copyPhone;
+    if (!phoneNumber || !status || !indicator) {
+      console.error("Unable to copy phone number: card controls are incomplete.");
+      return;
+    }
+
+    try {
+      await copyPhoneNumber(phoneNumber);
+      button.classList.add("is-copied");
+      button.setAttribute("aria-label", `Copied phone number ${phoneNumber}`);
+      indicator.textContent = "Copied";
+      status.textContent = "Phone number copied to clipboard.";
+      window.clearTimeout(phoneCopyTimeouts.get(button));
+      phoneCopyTimeouts.set(
+        button,
+        window.setTimeout(() => {
+          if (!button.isConnected) return;
+          button.classList.remove("is-copied");
+          button.setAttribute("aria-label", `Copy phone number ${phoneNumber}`);
+          indicator.textContent = "Copy";
+          status.textContent = "";
+        }, 1800),
+      );
+    } catch (error) {
+      status.textContent = "Could not copy number. Please select it manually.";
+      console.error("Unable to copy missionary phone number.", error);
+    }
   });
 
   grid?.addEventListener("click", (event) => {
@@ -641,36 +712,18 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
-  const hamburgerBtn = document.getElementById("hamburgerBtn");
-  const hamburgerIcon = document.getElementById("hamburgerIcon");
-  const drawer = document.getElementById("mobileDrawer");
-  const closedPath = "M4 6h16M4 12h16M4 18h16";
-  const openPath = "M6 18L18 6M6 6l12 12";
-
-  function setMenuOpen(open) {
-    drawer?.classList.toggle("open", open);
-    hamburgerBtn?.setAttribute("aria-expanded", String(open));
-    hamburgerIcon?.setAttribute("d", open ? openPath : closedPath);
-  }
-  hamburgerBtn?.addEventListener("click", () =>
-    setMenuOpen(!drawer?.classList.contains("open")),
-  );
-  drawer
-    ?.querySelectorAll("a")
-    .forEach((link) =>
-      link.addEventListener("click", () => setMenuOpen(false)),
-    );
-
   function scrollToGive() {
-    closeProfileDialog();
+    closeImageDialog();
     document.getElementById("give")?.scrollIntoView({ behavior: "smooth" });
-    setMenuOpen(false);
   }
-  ["giveNowNav", "giveNowDrawer", "giveNowHero", "giveNowFooter"].forEach(
-    (id) => {
-      document.getElementById(id)?.addEventListener("click", scrollToGive);
-    },
-  );
+  [
+    "giveNowNav",
+    "giveNowHero",
+    "giveNowFooter",
+    "giveNowMobile",
+  ].forEach((id) => {
+    document.getElementById(id)?.addEventListener("click", scrollToGive);
+  });
   document.querySelectorAll(".tab-btn").forEach((button) => {
     button.addEventListener("click", () => {
       const target = button.getAttribute("data-tab");
