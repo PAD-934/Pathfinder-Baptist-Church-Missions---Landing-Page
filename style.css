@@ -1198,28 +1198,6 @@ button {
   font-size: 12px;
   line-height: 1.4;
 }
-.missionary-give-btn {
-  flex: 0 0 auto;
-  min-width: 76px;
-  padding: 12px 18px;
-  border: 1px solid #d49a2e;
-  border-radius: 7px;
-  background: #d49a2e;
-  color: #17202c;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition:
-    background 0.2s ease,
-    transform 0.2s ease;
-}
-.missionary-give-btn:hover {
-  background: #e5b346;
-  transform: translateY(-1px);
-}
 .missionary-card:hover .missionary-support-btn {
   background: rgba(201, 145, 58, 0.18);
 }
@@ -1838,14 +1816,6 @@ button {
 .missionary-contact-note {
   color: #756b61;
 }
-.missionary-give-btn {
-  border-color: var(--border-hi);
-  background: #f4eedf;
-  color: #8a4d1f;
-}
-.missionary-give-btn:hover {
-  background: #ead8bb;
-}
 .missionary-card:hover {
   box-shadow: 0 20px 50px rgba(69, 47, 31, 0.16);
 }
@@ -2096,10 +2066,6 @@ button {
     align-items: stretch;
     flex-direction: column;
     gap: 8px;
-  }
-  .missionary-give-btn {
-    width: 100%;
-    min-height: 44px;
   }
   .missionary-load-more {
     width: 100%;
