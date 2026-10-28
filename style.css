@@ -1178,12 +1178,22 @@ button {
   overflow-wrap: anywhere;
 }
 .missionary-copy-indicator {
+  display: inline-flex;
   flex: 0 0 auto;
+  align-items: center;
+  gap: 4px;
   color: var(--gold);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+.missionary-copy-indicator svg {
+  display: none;
+  flex: 0 0 auto;
+}
+.missionary-phone-copy.is-copied .missionary-copy-indicator .copied-icon {
+  display: block;
 }
 .missionary-phone-copy:hover,
 .missionary-phone-copy.is-copied {
@@ -1967,6 +1977,47 @@ button {
 }
 
 @media (max-width: 600px) {
+  .missionary-phone-copy {
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 8px 6px;
+  }
+  .missionary-phone-copy > svg {
+    display: none;
+  }
+  .missionary-phone-number {
+    flex: 0 1 auto;
+    max-width: 100%;
+    overflow-wrap: normal;
+    white-space: nowrap;
+    font-size: clamp(7px, 2.15vw, 8.5px);
+    letter-spacing: -0.035em;
+  }
+  .missionary-copy-indicator {
+    display: inline-flex;
+    flex: 0 0 auto;
+    order: -1;
+    margin-left: 0;
+  }
+  .missionary-copy-indicator svg {
+    width: 16px;
+    height: 16px;
+  }
+  .missionary-copy-label {
+    display: none;
+  }
+  .missionary-copy-indicator .copy-icon {
+    display: block;
+  }
+  .missionary-copy-indicator .copied-icon {
+    display: none;
+  }
+  .missionary-phone-copy.is-copied .missionary-copy-indicator .copy-icon {
+    display: none;
+  }
+  .missionary-phone-copy.is-copied .missionary-copy-indicator .copied-icon {
+    display: block;
+  }
   .hero-content {
     width: 100%;
     padding: 104px 20px 72px;
@@ -2171,6 +2222,15 @@ button {
 }
 
 @media (max-width: 360px) {
+  .missionary-phone-copy {
+    gap: 0;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  .missionary-phone-number {
+    font-size: 8px;
+    letter-spacing: -0.045em;
+  }
   .navbar-inner {
     padding-right: 12px;
     padding-left: 12px;

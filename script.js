@@ -548,7 +548,11 @@ document.addEventListener("DOMContentLoaded", () => {
             >
               <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
               <span class="missionary-phone-number">${missionary.phone}</span>
-              <span class="missionary-copy-indicator" aria-hidden="true">Copy</span>
+              <span class="missionary-copy-indicator" aria-hidden="true">
+                <svg class="copy-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>
+                <svg class="copied-icon" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="missionary-copy-label">Copy</span>
+              </span>
             </button>
             <span class="missionary-copy-status" aria-live="polite"></span>
           </div>
@@ -630,8 +634,9 @@ document.addEventListener("DOMContentLoaded", () => {
       .closest(".missionary-actions")
       ?.querySelector(".missionary-copy-status");
     const indicator = button.querySelector(".missionary-copy-indicator");
+    const copyLabel = button.querySelector(".missionary-copy-label");
     const phoneNumber = button.dataset.copyPhone;
-    if (!phoneNumber || !status || !indicator) {
+    if (!phoneNumber || !status || !indicator || !copyLabel) {
       console.error("Unable to copy phone number: card controls are incomplete.");
       return;
     }
@@ -640,7 +645,7 @@ document.addEventListener("DOMContentLoaded", () => {
       await copyPhoneNumber(phoneNumber);
       button.classList.add("is-copied");
       button.setAttribute("aria-label", `Copied phone number ${phoneNumber}`);
-      indicator.textContent = "Copied";
+      copyLabel.textContent = "Copied";
       status.textContent = "Phone number copied to clipboard.";
       window.clearTimeout(phoneCopyTimeouts.get(button));
       phoneCopyTimeouts.set(
@@ -649,7 +654,7 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!button.isConnected) return;
           button.classList.remove("is-copied");
           button.setAttribute("aria-label", `Copy phone number ${phoneNumber}`);
-          indicator.textContent = "Copy";
+          copyLabel.textContent = "Copy";
           status.textContent = "";
         }, 1800),
       );
