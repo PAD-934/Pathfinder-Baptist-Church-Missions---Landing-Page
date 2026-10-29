@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ".mission-carousel-current",
     );
     const pauseReasons = new Set();
+    const savedTabIndexes = new WeakMap();
     const reducedMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
@@ -55,9 +56,35 @@ document.addEventListener("DOMContentLoaded", () => {
       missionTrack.style.transform = `translate3d(-${activeMissionSlide * 100}%, 0, 0)`;
 
       missionSlides.forEach((slide, slideIndex) => {
-        const isActive = slideIndex === activeMissionSlide;
-        slide.setAttribute("aria-hidden", String(!isActive));
-        slide.inert = !isActive;
+        const isInactive = slideIndex !== activeMissionSlide;
+        slide.setAttribute("aria-hidden", String(isInactive));
+        if ("inert" in slide) {
+          slide.inert = isInactive;
+          return;
+        }
+
+        slide
+          .querySelectorAll(
+            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]',
+          )
+          .forEach((element) => {
+            if (isInactive) {
+              if (!savedTabIndexes.has(element)) {
+                savedTabIndexes.set(element, element.getAttribute("tabindex"));
+              }
+              element.setAttribute("tabindex", "-1");
+              return;
+            }
+
+            if (!savedTabIndexes.has(element)) return;
+            const originalTabIndex = savedTabIndexes.get(element);
+            if (originalTabIndex === null) {
+              element.removeAttribute("tabindex");
+            } else {
+              element.setAttribute("tabindex", originalTabIndex);
+            }
+            savedTabIndexes.delete(element);
+          });
       });
       missionDots.forEach((dot, dotIndex) => {
         const isActive = dotIndex === activeMissionSlide;
@@ -140,7 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
       resumeMissionAutoplay("touch");
     });
     document.addEventListener("visibilitychange", syncMissionAutoplay);
-    reducedMotion.addEventListener("change", syncMissionAutoplay);
+    if (typeof reducedMotion.addEventListener === "function") {
+      reducedMotion.addEventListener("change", syncMissionAutoplay);
+    } else {
+      reducedMotion.addListener(syncMissionAutoplay);
+    }
 
     if ("IntersectionObserver" in window) {
       const carouselVisibilityObserver = new IntersectionObserver(
@@ -286,7 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 15,
-      name: "Bartholomew Ikefujikwu Family",
+      name: "Bartholomew Ikechukwu",
       church: "Maranatha Baptist Church",
       state: "FCT Abuja",
       location: "Lugbe, Abuja",
@@ -331,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 20,
-      name: "Abiodun Esiola Family",
+      name: "Abiodun Esuola Family",
       church: "Christ Life Baptist Church",
       state: "Ogun State",
       location: "Ibara, Abeokuta",
@@ -385,7 +416,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 26,
-      name: "Olawadamilola Oluwarokanni Family",
+      name: "Oluwadamilola Oluwarokanmi Family",
       church: "Ambassador Baptist Church",
       state: "FCT Abuja",
       location: "Galadimawa, FCT Abuja",
@@ -394,7 +425,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 27,
-      name: "Timothy Lasi Esho Family",
+      name: "Timothy Lasisi Esho Family",
       church: "Land of Mercy Independent Baptist Church",
       state: "Ogun State",
       location: "Wasimi, Iyana Mosan, Abeokuta",
@@ -430,7 +461,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 31,
-      name: "Bedou Ph. Abandy Family",
+      name: "Bedolph Abandy Family",
       church: "Independent Baptist Church of Makoko",
       state: "Lagos State",
       location: "Makoko, Lagos State",
@@ -448,7 +479,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       id: 33,
-      name: "Airade Family",
+      name: "Ajibade Family",
       church: "All Grace Independent Baptist Church",
       state: "Lagos State",
       location: "Cele Nica, Lagos State",
@@ -609,13 +640,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const textarea = document.createElement("textarea");
     textarea.value = phoneNumber;
     textarea.setAttribute("readonly", "");
-    textarea.style.position = "fixed";
-    textarea.style.opacity = "0";
+    textarea.style.cssText =
+      "position:fixed;top:0;left:0;opacity:0;font-size:16px;";
     document.body.appendChild(textarea);
-    textarea.select();
 
     let copied = false;
     try {
+      textarea.focus();
+      textarea.select();
+      textarea.setSelectionRange(0, phoneNumber.length);
       copied = document.execCommand("copy");
     } finally {
       textarea.remove();
@@ -716,6 +749,44 @@ document.addEventListener("DOMContentLoaded", () => {
     navbar?.classList.toggle("scrolled", window.scrollY > 48);
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
+
+  const mobileNav = document.querySelector(".mobile-bottom-nav");
+  if (mobileNav) {
+    const mobileNavSections = ["home", "mission", "missionaries", "give", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+
+    function updateMobileNavSelection() {
+      const markerPosition = window.innerHeight * 0.35;
+      let activeSectionId = mobileNavSections[0]?.id;
+
+      mobileNavSections.forEach((section) => {
+        if (section.getBoundingClientRect().top <= markerPosition) {
+          activeSectionId = section.id;
+        }
+      });
+
+      mobileNav
+        .querySelectorAll("[aria-current]")
+        .forEach((item) => item.removeAttribute("aria-current"));
+      if (activeSectionId === "give") {
+        mobileNav
+          .querySelector("#giveNowMobile")
+          ?.setAttribute("aria-current", "location");
+        return;
+      }
+
+      mobileNav
+        .querySelector(`a[href="#${activeSectionId}"]`)
+        ?.setAttribute("aria-current", "location");
+    }
+
+    window.addEventListener("scroll", updateMobileNavSelection, {
+      passive: true,
+    });
+    window.addEventListener("resize", updateMobileNavSelection);
+    updateMobileNavSelection();
+  }
 
   function scrollToGive() {
     closeImageDialog();

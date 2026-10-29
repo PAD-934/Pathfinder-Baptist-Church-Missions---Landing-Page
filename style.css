@@ -455,6 +455,7 @@ button {
   }
   .mobile-bottom-link,
   .mobile-bottom-support {
+    position: relative;
     display: flex;
     min-width: 0;
     min-height: 52px;
@@ -473,6 +474,26 @@ button {
     white-space: nowrap;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-bottom-link[aria-current="location"],
+  .mobile-bottom-support[aria-current="location"] {
+    color: var(--gold);
+  }
+  .mobile-bottom-link[aria-current="location"]::after,
+  .mobile-bottom-support[aria-current="location"]::after {
+    position: absolute;
+    top: 8px;
+    left: calc(50% + 6px);
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(54, 39, 27, 0.22);
+    content: "";
+  }
+  .mobile-bottom-support[aria-current="location"] {
+    color: #fffaf0;
   }
   .mobile-bottom-link svg {
     flex: 0 0 auto;
@@ -2123,11 +2144,32 @@ button {
   }
   .mission-carousel-controls {
     justify-content: center;
-    gap: 14px;
+    gap: 10px;
+    min-height: 68px;
+    padding: 10px 14px;
   }
   .mission-carousel-arrow {
-    width: 42px;
-    height: 42px;
+    width: 40px;
+    height: 40px;
+  }
+  .mission-carousel-arrow:first-child {
+    border-color: #8c4c1d;
+    background: #8c4c1d;
+    color: #fffaf0;
+  }
+  .mission-carousel-pagination {
+    gap: 6px;
+  }
+  .mission-carousel-dot {
+    width: 8px;
+    height: 8px;
+  }
+  .mission-carousel-dot.is-active {
+    width: 26px;
+  }
+  .mission-carousel-status {
+    min-width: 48px;
+    font-size: 11px;
   }
   .missionary-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
