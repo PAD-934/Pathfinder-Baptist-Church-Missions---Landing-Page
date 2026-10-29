@@ -1711,6 +1711,44 @@ button {
   line-height: 1.75;
   margin: 0;
 }
+.footer-social-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+.footer-social-link {
+  display: inline-flex;
+  width: 42px;
+  height: 42px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(224, 171, 69, 0.32);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  color: #e5a32d;
+  text-decoration: none;
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+.footer-social-link:hover {
+  transform: translateY(-2px);
+  border-color: currentColor;
+  background: rgba(255, 255, 255, 0.1);
+}
+.footer-social-link:focus-visible {
+  outline: 3px solid #f1bd59;
+  outline-offset: 3px;
+}
+.footer-social-link--facebook:hover {
+  color: #6ea8fe;
+}
+.footer-social-link--whatsapp:hover {
+  color: #55d889;
+}
 .footer-links h4,
 .footer-contact h4,
 .footer-mandate h4 {
