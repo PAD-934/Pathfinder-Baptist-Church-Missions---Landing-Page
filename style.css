@@ -1980,6 +1980,9 @@ button {
   .mission-slide-media {
     order: -1;
   }
+  .footer-links {
+    display: none;
+  }
   .missionary-grid {
     gap: 18px;
   }
@@ -2239,6 +2242,27 @@ button {
 }
 
 @media (max-width: 540px) {
+  .pray-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .pray-card {
+    padding: 14px 12px;
+    border-radius: 10px;
+  }
+  .pray-emoji {
+    margin-bottom: 8px;
+    font-size: 21px;
+  }
+  .pray-title {
+    font-size: 12px;
+    line-height: 1.35;
+  }
+  .pray-body {
+    font-size: 11px;
+    line-height: 1.5;
+  }
   .site-footer {
     padding: 52px 18px 28px;
   }
