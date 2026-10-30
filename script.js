@@ -626,11 +626,11 @@ document.addEventListener("DOMContentLoaded", () => {
     renderMissionaries();
   });
 
-  const phoneCopyTimeouts = new WeakMap();
-  async function copyPhoneNumber(phoneNumber) {
-    if (navigator.clipboard?.writeText) {
+  const copyButtonTimeouts = new WeakMap();
+  async function copyTextToClipboard(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
       try {
-        await navigator.clipboard.writeText(phoneNumber);
+        await navigator.clipboard.writeText(text);
         return;
       } catch {
         // Fall back for browsers or contexts that deny clipboard access.
@@ -638,7 +638,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const textarea = document.createElement("textarea");
-    textarea.value = phoneNumber;
+    textarea.value = text;
     textarea.setAttribute("readonly", "");
     textarea.style.cssText =
       "position:fixed;top:0;left:0;opacity:0;font-size:16px;";
@@ -648,7 +648,7 @@ document.addEventListener("DOMContentLoaded", () => {
     try {
       textarea.focus();
       textarea.select();
-      textarea.setSelectionRange(0, phoneNumber.length);
+      textarea.setSelectionRange(0, text.length);
       copied = document.execCommand("copy");
     } finally {
       textarea.remove();
@@ -658,6 +658,8 @@ document.addEventListener("DOMContentLoaded", () => {
       throw new Error("Clipboard copy was unsuccessful.");
     }
   }
+
+  const giveSection = document.getElementById("give");
 
   grid?.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-copy-phone]");
@@ -675,13 +677,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     try {
-      await copyPhoneNumber(phoneNumber);
+      await copyTextToClipboard(phoneNumber);
       button.classList.add("is-copied");
       button.setAttribute("aria-label", `Copied phone number ${phoneNumber}`);
       copyLabel.textContent = "Copied";
       status.textContent = "Phone number copied to clipboard.";
-      window.clearTimeout(phoneCopyTimeouts.get(button));
-      phoneCopyTimeouts.set(
+      window.clearTimeout(copyButtonTimeouts.get(button));
+      copyButtonTimeouts.set(
         button,
         window.setTimeout(() => {
           if (!button.isConnected) return;
@@ -694,6 +696,42 @@ document.addEventListener("DOMContentLoaded", () => {
     } catch (error) {
       status.textContent = "Could not copy number. Please select it manually.";
       console.error("Unable to copy missionary phone number.", error);
+    }
+  });
+
+  giveSection?.addEventListener("click", async (event) => {
+    const button = event.target.closest("[data-copy-account-number]");
+    if (!button) return;
+
+    const accountNumber = button.dataset.copyAccountNumber;
+    const label = button.querySelector(".account-copy-label");
+    const status = button.parentElement?.querySelector(".account-copy-status");
+    if (!accountNumber || !label || !status) {
+      console.error("Unable to copy UBA account number: copy controls are incomplete.");
+      return;
+    }
+
+    try {
+      await copyTextToClipboard(accountNumber);
+      button.classList.add("is-copied");
+      button.setAttribute("aria-label", "UBA account number copied");
+      label.textContent = "Copied";
+      status.textContent = "UBA account number copied to clipboard.";
+      window.clearTimeout(copyButtonTimeouts.get(button));
+      copyButtonTimeouts.set(
+        button,
+        window.setTimeout(() => {
+          if (!button.isConnected) return;
+          button.classList.remove("is-copied");
+          button.setAttribute("aria-label", "Copy UBA account number");
+          label.textContent = "Copy";
+          status.textContent = "";
+        }, 1800),
+      );
+    } catch (error) {
+      status.textContent =
+        "Could not copy account number. Please select it manually.";
+      console.error("Unable to copy UBA account number.", error);
     }
   });
 
@@ -750,13 +788,99 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", onScroll, { passive: true });
   onScroll();
 
+  const giveCloseButton = giveSection?.querySelector(".mobile-give-close");
+  const giveBackButton = giveSection?.querySelector(".mobile-give-back");
+  const giveCountryButtons = [
+    ...(giveSection?.querySelectorAll("[data-give-country]") ?? []),
+  ];
+  const mobileGiveMediaQuery = window.matchMedia("(max-width: 767px)");
+  let giveReturnFocus;
+  let pageScrollBeforeGive = 0;
+  let savedBodyStyles;
+  let savedScrollBehavior;
+
+  function setActiveGivingTab(target) {
+    giveSection?.querySelectorAll(".tab-btn").forEach((tab) => {
+      tab.classList.toggle("active", tab.dataset.tab === target);
+    });
+    giveSection?.querySelectorAll(".tab-panel").forEach((panel) => {
+      panel.classList.toggle("active", panel.id === `tab-${target}`);
+    });
+  }
+
+  function openMobileGive() {
+    if (!giveSection || !mobileGiveMediaQuery.matches) return false;
+
+    closeImageDialog();
+    giveReturnFocus = document.activeElement;
+    pageScrollBeforeGive = window.scrollY;
+    savedBodyStyles = {
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+    };
+    savedScrollBehavior = document.documentElement.style.scrollBehavior;
+    giveSection.classList.add("is-open", "is-choosing-country");
+    giveSection.setAttribute("role", "dialog");
+    giveSection.setAttribute("aria-modal", "true");
+    giveSection.setAttribute(
+      "aria-label",
+      "Choose how to support Pathfinder Baptist Missions",
+    );
+    document.documentElement.classList.add("mobile-give-open");
+    document.body.classList.add("mobile-give-open");
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${pageScrollBeforeGive}px`;
+    document.body.style.width = "100%";
+    mobileNav
+      ?.querySelector("#giveNowMobile")
+      ?.setAttribute("aria-current", "location");
+    giveSection.scrollTop = 0;
+    giveCloseButton?.focus();
+    return true;
+  }
+
+  function closeMobileGive() {
+    if (!giveSection?.classList.contains("is-open")) return;
+
+    giveSection.classList.remove("is-open", "is-choosing-country");
+    giveSection.removeAttribute("role");
+    giveSection.removeAttribute("aria-modal");
+    giveSection.removeAttribute("aria-label");
+    document.documentElement.classList.remove("mobile-give-open");
+    document.body.classList.remove("mobile-give-open");
+    if (savedBodyStyles) {
+      document.body.style.position = savedBodyStyles.position;
+      document.body.style.top = savedBodyStyles.top;
+      document.body.style.width = savedBodyStyles.width;
+    }
+    document.documentElement.style.scrollBehavior = "auto";
+    window.scrollTo(0, pageScrollBeforeGive);
+    if (giveReturnFocus instanceof HTMLElement && giveReturnFocus.isConnected) {
+      try {
+        giveReturnFocus.focus({ preventScroll: true });
+      } catch {
+        giveReturnFocus.focus();
+      }
+    }
+    window.requestAnimationFrame(() => {
+      if (Math.abs(window.scrollY - pageScrollBeforeGive) > 1) {
+        window.scrollTo(0, pageScrollBeforeGive);
+      }
+      document.documentElement.style.scrollBehavior = savedScrollBehavior || "";
+      updateMobileNavSelection();
+    });
+  }
+
   const mobileNav = document.querySelector(".mobile-bottom-nav");
+  let updateMobileNavSelection = () => {};
   if (mobileNav) {
-    const mobileNavSections = ["home", "mission", "missionaries", "give", "contact"]
+    const mobileNavSections = ["home", "mission", "missionaries", "pray", "contact"]
       .map((id) => document.getElementById(id))
       .filter(Boolean);
 
-    function updateMobileNavSelection() {
+    updateMobileNavSelection = () => {
+      if (giveSection?.classList.contains("is-open")) return;
       const markerPosition = window.innerHeight * 0.35;
       let activeSectionId = mobileNavSections[0]?.id;
 
@@ -769,17 +893,10 @@ document.addEventListener("DOMContentLoaded", () => {
       mobileNav
         .querySelectorAll("[aria-current]")
         .forEach((item) => item.removeAttribute("aria-current"));
-      if (activeSectionId === "give") {
-        mobileNav
-          .querySelector("#giveNowMobile")
-          ?.setAttribute("aria-current", "location");
-        return;
-      }
-
       mobileNav
         .querySelector(`a[href="#${activeSectionId}"]`)
         ?.setAttribute("aria-current", "location");
-    }
+    };
 
     window.addEventListener("scroll", updateMobileNavSelection, {
       passive: true,
@@ -788,9 +905,17 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMobileNavSelection();
   }
 
-  function scrollToGive() {
+  function scrollToGive(event) {
+    if (
+      event.currentTarget?.id === "giveNowMobile" &&
+      giveSection?.classList.contains("is-open")
+    ) {
+      closeMobileGive();
+      return;
+    }
+    if (openMobileGive()) return;
     closeImageDialog();
-    document.getElementById("give")?.scrollIntoView({ behavior: "smooth" });
+    giveSection?.scrollIntoView({ behavior: "smooth" });
   }
   [
     "giveNowNav",
@@ -800,17 +925,59 @@ document.addEventListener("DOMContentLoaded", () => {
   ].forEach((id) => {
     document.getElementById(id)?.addEventListener("click", scrollToGive);
   });
-  document.querySelectorAll(".tab-btn").forEach((button) => {
+  giveCloseButton?.addEventListener("click", closeMobileGive);
+  giveSection?.addEventListener("click", (event) => {
+    if (event.target === giveSection) closeMobileGive();
+  });
+  giveSection?.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeMobileGive();
+      return;
+    }
+    if (event.key !== "Tab") return;
+
+    const focusable = [
+      ...giveSection.querySelectorAll(
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+      ),
+    ].filter((element) => element.getClientRects().length > 0);
+    if (!focusable.length) return;
+
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
+  giveCountryButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const target = button.getAttribute("data-tab");
-      document
-        .querySelectorAll(".tab-btn")
-        .forEach((tab) => tab.classList.toggle("active", tab === button));
-      document
-        .querySelectorAll(".tab-panel")
-        .forEach((panel) =>
-          panel.classList.toggle("active", panel.id === `tab-${target}`),
-        );
+      setActiveGivingTab(button.dataset.giveCountry);
+      giveSection?.classList.remove("is-choosing-country");
+      giveSection.scrollTop = 0;
+      giveBackButton?.focus();
+    });
+  });
+  giveBackButton?.addEventListener("click", () => {
+    giveSection?.classList.add("is-choosing-country");
+    giveSection.scrollTop = 0;
+    giveCountryButtons[0]?.focus();
+  });
+  const onGiveViewportChange = (event) => {
+    if (!event.matches) closeMobileGive();
+  };
+  if (typeof mobileGiveMediaQuery.addEventListener === "function") {
+    mobileGiveMediaQuery.addEventListener("change", onGiveViewportChange);
+  } else {
+    mobileGiveMediaQuery.addListener(onGiveViewportChange);
+  }
+  giveSection?.querySelectorAll(".tab-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      setActiveGivingTab(button.dataset.tab);
     });
   });
 

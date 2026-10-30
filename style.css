@@ -1348,6 +1348,175 @@ button {
   padding: clamp(60px, 12vw, 120px) 24px;
   background: var(--surface);
 }
+.mobile-give-close,
+.give-country-picker,
+.mobile-give-back {
+  display: none;
+}
+.give-country-picker-title {
+  margin: 0 0 22px;
+  color: var(--text);
+  font-family: var(--serif);
+  font-size: clamp(1.45rem, 6vw, 1.8rem);
+  text-align: center;
+}
+.give-country-option {
+  display: flex;
+  width: 100%;
+  min-height: 92px;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid var(--border-hi);
+  background: #fff;
+  color: var(--text);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+.give-country-option + .give-country-option {
+  margin-top: 12px;
+}
+.give-country-option:hover {
+  transform: translateY(-1px);
+  border-color: var(--gold);
+  box-shadow: 0 6px 18px rgba(69, 47, 31, 0.1);
+}
+.give-country-option:focus-visible,
+.mobile-give-close:focus-visible,
+.mobile-give-back:focus-visible {
+  outline: 3px solid rgba(184, 119, 42, 0.55);
+  outline-offset: 3px;
+}
+.give-country-code {
+  display: grid;
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+  place-items: center;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 19px;
+  font-weight: 700;
+}
+.give-country-ng {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  font-size: 21px;
+}
+.give-country-initial--n {
+  color: #008751;
+}
+.give-country-initial--g {
+  padding: 0 2px;
+  border-radius: 2px;
+  background: #008751;
+  color: #fff;
+}
+.give-country-globe {
+  width: 64px;
+  height: 64px;
+  flex-basis: 64px;
+  padding: 2px;
+  object-fit: contain;
+}
+.give-country-copy {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+}
+.give-country-name {
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.give-country-description {
+  color: var(--muted);
+  font-size: 12px;
+}
+.give-country-arrow {
+  flex: 0 0 auto;
+  color: var(--muted);
+}
+.give-country-help {
+  margin: 24px 0 0;
+  padding: 16px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  text-align: center;
+}
+.give-country-help strong {
+  color: var(--text);
+}
+.give-country-help a {
+  color: var(--gold);
+  overflow-wrap: anywhere;
+}
+.mobile-give-back {
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: var(--gold);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.paystack-card {
+  display: flex;
+  flex-direction: column;
+}
+.paystack-icon {
+  background: linear-gradient(135deg, #0879a8, #00a5cf);
+  color: #fff;
+  font-weight: 800;
+}
+.paystack-qr-placeholder {
+  display: flex;
+  width: min(100%, 240px);
+  aspect-ratio: 1;
+  min-height: 180px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  align-self: center;
+  padding: 20px;
+  border: 1px dashed var(--border-hi);
+  border-radius: 12px;
+  background:
+    linear-gradient(45deg, rgba(138, 77, 31, 0.035) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(138, 77, 31, 0.035) 25%, transparent 25%),
+    #fff;
+  background-size: 18px 18px;
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+}
+.paystack-qr-placeholder-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  border-radius: 12px;
+  background: #e6f7fb;
+  color: #0879a8;
+  font-size: 24px;
+  font-weight: 800;
+}
 .give-inner {
   max-width: 880px;
   margin: 0 auto;
@@ -1424,6 +1593,11 @@ button {
   justify-content: center;
   font-size: 24px;
 }
+.give-icon.remitly-logo {
+  display: block;
+  background: none;
+  object-fit: cover;
+}
 
 .steps {
   display: flex;
@@ -1461,6 +1635,40 @@ button {
   color: rgba(245, 240, 232, 0.6);
   line-height: 1.65;
 }
+.remitly-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+.remitly-link {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  padding: 7px 10px;
+  border: 1px solid var(--border-hi);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.35;
+  text-decoration: none;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
+}
+.remitly-link:hover {
+  border-color: var(--gold);
+  background: var(--gold-dim);
+}
+.remitly-link:focus-visible {
+  outline: 3px solid rgba(184, 119, 42, 0.45);
+  outline-offset: 2px;
+}
+.remitly-desktop-prompt {
+  display: none;
+}
 
 .bank-box {
   background: var(--bg);
@@ -1480,8 +1688,9 @@ button {
   gap: 8px;
 }
 .bank-row {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 12px;
   align-items: center;
   padding: 11px 0;
   border-bottom: 1px solid rgba(201, 145, 58, 0.07);
@@ -1497,9 +1706,69 @@ button {
   font-weight: 700;
   color: var(--text);
   text-align: right;
-  max-width: 55%;
+  min-width: 0;
+  max-width: none;
 }
-
+.bank-row .bank-account-value {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  white-space: nowrap;
+}
+.copy-account-number {
+  display: inline-flex;
+  min-height: 32px;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  background: #fffaf0;
+  color: var(--gold);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease;
+}
+.copy-account-number:hover {
+  border-color: var(--border-hi);
+  background: var(--gold-dim);
+}
+.copy-account-number:focus-visible {
+  outline: 3px solid rgba(184, 119, 42, 0.4);
+  outline-offset: 2px;
+}
+.copy-account-number .account-copied-icon,
+.copy-account-number.is-copied .account-copy-icon {
+  display: none;
+}
+.copy-account-number .account-copy-label {
+  display: none;
+}
+.copy-account-number.is-copied {
+  border-color: rgba(56, 116, 76, 0.35);
+  color: #38744c;
+}
+.copy-account-number.is-copied .account-copied-icon {
+  display: block;
+}
+.account-copy-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  clip-path: inset(50%);
+}
 .info-note {
   padding: 16px 20px;
   background: var(--gold-dim);
@@ -1542,6 +1811,15 @@ button {
   border-radius: 16px;
   padding: 28px;
 }
+.ng-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 22px;
+}
+.ng-card-heading {
+  min-width: 0;
+}
 .ng-card h3 {
   font-family: var(--serif);
   font-size: 1.25rem;
@@ -1551,6 +1829,9 @@ button {
 }
 .ng-card p {
   margin: 0 0 22px;
+}
+.ng-card-header p {
+  margin-bottom: 0;
 }
 .ng-icon {
   width: 48px;
@@ -1567,6 +1848,13 @@ button {
 }
 .ng-icon.red {
   background: linear-gradient(135deg, #7b0d0d, #c0392b);
+}
+.ng-icon.uba-logo {
+  width: 60px;
+  height: 60px;
+  flex: 0 0 60px;
+  margin-bottom: 0;
+  object-fit: cover;
 }
 .ng-details {
   background: var(--bg);
@@ -1588,6 +1876,13 @@ button {
   font-weight: 700;
   font-size: 14px;
   color: var(--text);
+}
+.ng-account-value {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 /* ============================================================
@@ -1960,6 +2255,24 @@ button {
   background: rgba(184, 119, 42, 0.1);
 }
 
+@media (min-width: 960px) {
+  .intl-payment-options {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(280px, 1fr);
+    align-items: start;
+    gap: 20px;
+  }
+  .remitly-app-link {
+    display: none;
+  }
+  .remitly-mobile-prompt {
+    display: none;
+  }
+  .remitly-desktop-prompt {
+    display: block;
+  }
+}
+
 @media (min-width: 1600px) {
   .missionary-photo {
     aspect-ratio: 1.38;
@@ -2017,6 +2330,100 @@ button {
 @media (max-width: 767px) {
   .mission-slide-media {
     order: -1;
+  }
+  html.mobile-give-open,
+  body.mobile-give-open {
+    overflow: hidden;
+  }
+  #give.give-section:not(.is-open) {
+    display: none;
+  }
+  #give.give-section.is-open {
+    position: fixed;
+    z-index: 500;
+    inset: 0;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+    align-items: center;
+    justify-content: center;
+    padding: 82px 16px
+      calc(92px + env(safe-area-inset-bottom));
+    overflow: hidden;
+    border: 0;
+    background: rgba(15, 13, 10, 0.42);
+  }
+  #give.give-section.is-open .give-inner {
+    position: relative;
+    width: min(100%, 620px);
+    max-height: calc(100vh - 174px - env(safe-area-inset-bottom));
+    max-height: calc(100dvh - 174px - env(safe-area-inset-bottom));
+    padding: 58px 18px 22px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border-hi);
+    border-radius: 20px;
+    background: var(--surface);
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.3);
+  }
+  html.mobile-give-open .navbar {
+    z-index: 520;
+    background: rgba(10, 12, 18, 0.96);
+    border-bottom-color: var(--border);
+    backdrop-filter: blur(14px);
+  }
+  html.mobile-give-open .mobile-bottom-nav {
+    z-index: 520;
+  }
+  html.mobile-give-open .navbar .brand-name {
+    color: #f5f0e8;
+  }
+  html.mobile-give-open .navbar .brand-sub {
+    color: #e5a32d;
+  }
+  #give.give-section.is-open .section-intro,
+  #give.give-section.is-open .tab-switcher {
+    display: none;
+  }
+  #give.give-section.is-open.is-choosing-country .give-country-picker {
+    display: block;
+  }
+  #give.give-section.is-open.is-choosing-country .tab-panel,
+  #give.give-section.is-open.is-choosing-country .mobile-give-back {
+    display: none !important;
+  }
+  #give.give-section.is-open:not(.is-choosing-country) .mobile-give-back {
+    display: flex;
+  }
+  .mobile-give-close {
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    width: 40px;
+    height: 40px;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--text);
+    font: inherit;
+    font-size: 25px;
+    line-height: 1;
+    cursor: pointer;
+  }
+  #give.give-section.is-open .give-card,
+  #give.give-section.is-open .ng-card {
+    padding: 20px;
+  }
+  #give.give-section.is-open .paystack-qr-placeholder {
+    width: min(100%, 220px);
   }
   .footer-links {
     display: none;
@@ -2261,11 +2668,13 @@ button {
     padding: 14px;
   }
   .bank-row {
-    align-items: flex-start;
-    gap: 12px;
+    align-items: center;
   }
   .bank-row span:last-child {
     overflow-wrap: anywhere;
+  }
+  .bank-row .bank-account-value {
+    overflow-wrap: normal;
   }
 }
 

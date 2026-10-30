@@ -475,6 +475,13 @@
       <!-- ============ GIVE ============ -->
       <section id="give" class="give-section">
         <div class="give-inner">
+          <button
+            class="mobile-give-close"
+            type="button"
+            aria-label="Close giving options"
+          >
+            &times;
+          </button>
           <div class="section-intro">
             <div class="gold-label">Make a Difference Today</div>
             <h2 class="section-heading center">
@@ -487,9 +494,113 @@
             </p>
           </div>
 
+          <div class="give-country-picker" id="giveCountryPicker">
+            <h2 class="give-country-picker-title">Where are you giving from?</h2>
+            <button
+              class="give-country-option"
+              type="button"
+              data-give-country="intl"
+            >
+              <img
+                class="give-country-code give-country-globe"
+                src="Pictures/globe.png"
+                alt=""
+                aria-hidden="true"
+              />
+              <span class="give-country-copy">
+                <span class="give-country-name"
+                  >Giving from another country</span
+                >
+                <span class="give-country-description"
+                  >Remitly and Paystack</span
+                >
+              </span>
+              <svg
+                class="give-country-arrow"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <button
+              class="give-country-option"
+              type="button"
+              data-give-country="ng"
+            >
+              <span class="give-country-code give-country-ng" aria-hidden="true"
+                ><span class="give-country-initial--n">N</span
+                ><span class="give-country-initial--g">G</span></span
+              >
+              <span class="give-country-copy">
+                <span class="give-country-name">Giving from Nigeria</span>
+                <span class="give-country-description"
+                  >UBA bank transfer and Paystack</span
+                >
+              </span>
+              <svg
+                class="give-country-arrow"
+                width="20"
+                height="20"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  d="m9 18 6-6-6-6"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+            <p class="give-country-help">
+              <strong>Questions?</strong> Contact us at
+              <a href="mailto:pathfinderfoundation2021@gmail.com"
+                >pathfinderfoundation2021@gmail.com</a
+              >
+              or WhatsApp us at
+              <a
+                href="https://wa.me/2348028940144"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp Pathfinder at +234 802 894 0144"
+                >+234 802 894 0144</a
+              >. We will help you give safely and confidently.
+            </p>
+          </div>
+          <button class="mobile-give-back" type="button">
+            <svg
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                d="M19 12H5m7 7-7-7 7-7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            Choose a different location
+          </button>
+
           <div class="tab-switcher">
             <button class="tab-btn active" data-tab="intl">
-              🌍 International<span class="tab-sub">Outside Nigeria</span>
+              🌍 Another Country<span class="tab-sub">Outside Nigeria</span>
             </button>
             <button class="tab-btn" data-tab="ng">
               🇳🇬 Nigeria<span class="tab-sub">Within Nigeria</span>
@@ -498,9 +609,14 @@
 
           <!-- International tab -->
           <div class="tab-panel active" id="tab-intl">
-            <div class="give-card">
+            <div class="intl-payment-options">
+              <div class="give-card">
               <div class="give-card-header">
-                <div class="give-icon">💸</div>
+                <img
+                  class="give-icon remitly-logo"
+                  src="Pictures/Remitlylogo.png"
+                  alt="Remitly"
+                />
                 <div>
                   <h3>Send via Remitly</h3>
                   <p class="muted-sm">trusted by millions worldwide.</p>
@@ -512,9 +628,34 @@
                   <div class="step-num">01</div>
                   <div>
                     <div class="step-title">Download Remitly</div>
-                    <div class="step-body">
-                      Get the free Remitly app on iOS or Android, or visit
-                      remitly.com in your browser.
+                    <div class="step-body remitly-mobile-prompt">
+                      Choose the option that works best for your device:
+                    </div>
+                    <div class="step-body remitly-desktop-prompt">
+                      Open Remitly securely in a new browser tab:
+                    </div>
+                    <div class="remitly-links" aria-label="Open or download Remitly">
+                      <a
+                        class="remitly-link"
+                        href="https://www.remitly.com/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Open Remitly website</a
+                      >
+                      <a
+                        class="remitly-link remitly-app-link"
+                        href="https://apps.apple.com/us/app/remitly-send-money-transfer/id674258465"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Download for iPhone or iPad</a
+                      >
+                      <a
+                        class="remitly-link remitly-app-link"
+                        href="https://play.google.com/store/apps/details?id=com.remitly.androidapp"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        >Get the Android app</a
+                      >
                     </div>
                   </div>
                 </div>
@@ -564,22 +705,84 @@
                 <div class="bank-box-title">🏦 Recipient Bank Details</div>
                 <div class="bank-row">
                   <span>Account Name</span
-                  ><span>Pathfinder Baptist Missions</span>
+                  ><span>Pathfinder Association</span>
                 </div>
                 <div class="bank-row">
                   <span>Bank</span><span>UBA — United Bank for Africa</span>
                 </div>
                 <div class="bank-row">
                   <span>Account Number</span
-                  ><span>Contact us for account details</span>
-                </div>
-                <div class="bank-row">
-                  <span>SWIFT Code</span><span>UNAFNGLA</span>
+                  ><span class="bank-account-value"
+                    >2154004510
+                    <button
+                      class="copy-account-number"
+                      type="button"
+                      data-copy-account-number="2154004510"
+                      aria-label="Copy UBA account number"
+                    >
+                      <svg
+                        class="account-copy-icon"
+                        width="15"
+                        height="15"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <rect x="8" y="8" width="12" height="12" rx="2" />
+                        <path
+                          d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"
+                        />
+                      </svg>
+                      <svg
+                        class="account-copied-icon"
+                        width="15"
+                        height="15"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        aria-hidden="true"
+                      >
+                        <path
+                          d="m5 12 4 4L19 6"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                      </svg>
+                      <span class="account-copy-label">Copy</span>
+                    </button>
+                    <span class="account-copy-status" aria-live="polite"></span>
+                  </span>
                 </div>
                 <div class="bank-row no-border">
                   <span>Country</span><span>Nigeria</span>
                 </div>
               </div>
+            </div>
+
+            <div class="give-card paystack-card">
+              <div class="give-card-header">
+                <div class="give-icon paystack-icon" aria-hidden="true">₦</div>
+                <div>
+                  <h3>Give with Paystack</h3>
+                  <p class="muted-sm">
+                    Scan the official Paystack QR code to give.
+                  </p>
+                </div>
+              </div>
+              <div
+                class="paystack-qr-placeholder"
+                role="img"
+                aria-label="Placeholder for the official Paystack QR code"
+              >
+                <span class="paystack-qr-placeholder-mark" aria-hidden="true"
+                  >₦</span
+                >
+                <span>Paystack QR code will be added here</span>
+              </div>
+            </div>
             </div>
 
             <div class="info-note">
@@ -601,6 +804,14 @@
                 <a href="mailto:pathfinderfoundation2021@gmail.com"
                   >pathfinderfoundation2021@gmail.com</a
                 >
+                or WhatsApp us at
+                <a
+                  href="https://wa.me/2348028940144"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp Pathfinder at +234 802 894 0144"
+                  >+234 802 894 0144</a
+                >.
               </p>
             </div>
           </div>
@@ -609,33 +820,20 @@
           <div class="tab-panel" id="tab-ng">
             <div class="ng-grid">
               <div class="ng-card">
-                <div class="ng-icon green">🏦</div>
-                <h3>Moniepoint Transfer</h3>
-                <p class="muted-sm">
-                  Bank transfer via Moniepoint MFB — Nigeria's fast digital bank
-                </p>
-                <div class="ng-details">
-                  <div>
-                    <div class="ng-label">Bank</div>
-                    <div class="ng-value">Moniepoint MFB</div>
-                  </div>
-                  <div>
-                    <div class="ng-label">Account Name</div>
-                    <div class="ng-value">Pathfinder Baptist Missions</div>
-                  </div>
-                  <div>
-                    <div class="ng-label">Account Number</div>
-                    <div class="ng-value">Contact us for details</div>
+                <div class="ng-card-header">
+                  <img
+                    class="ng-icon uba-logo"
+                    src="Pictures/UBAlogo.jpg"
+                    alt="UBA"
+                  />
+                  <div class="ng-card-heading">
+                    <h3>UBA Bank Transfer</h3>
+                    <p class="muted-sm">
+                      United Bank for Africa — branches and online banking
+                      nationwide
+                    </p>
                   </div>
                 </div>
-              </div>
-              <div class="ng-card">
-                <div class="ng-icon red">🏧</div>
-                <h3>UBA Bank Transfer</h3>
-                <p class="muted-sm">
-                  United Bank for Africa — branches and online banking
-                  nationwide
-                </p>
                 <div class="ng-details">
                   <div>
                     <div class="ng-label">Bank</div>
@@ -643,12 +841,73 @@
                   </div>
                   <div>
                     <div class="ng-label">Account Name</div>
-                    <div class="ng-value">Pathfinder Baptist Missions</div>
+                    <div class="ng-value">Pathfinder Association</div>
                   </div>
                   <div>
                     <div class="ng-label">Account Number</div>
-                    <div class="ng-value">Contact us for details</div>
+                    <div class="ng-value ng-account-value">
+                      <span>2154004510</span>
+                      <button
+                        class="copy-account-number"
+                        type="button"
+                        data-copy-account-number="2154004510"
+                        aria-label="Copy UBA account number"
+                      >
+                        <svg
+                          class="account-copy-icon"
+                          width="15"
+                          height="15"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <rect x="8" y="8" width="12" height="12" rx="2" />
+                          <path
+                            d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"
+                          />
+                        </svg>
+                        <svg
+                          class="account-copied-icon"
+                          width="15"
+                          height="15"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="m5 12 4 4L19 6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span class="account-copy-label">Copy</span>
+                      </button>
+                      <span class="account-copy-status" aria-live="polite"></span>
+                    </div>
                   </div>
+                </div>
+              </div>
+              <div class="ng-card paystack-card">
+                <div class="ng-icon paystack-icon">₦</div>
+                <h3>Give with Paystack</h3>
+                <p class="muted-sm">
+                  Scan the official Paystack QR code to give securely.
+                </p>
+                <div
+                  class="paystack-qr-placeholder"
+                  role="img"
+                  aria-label="Placeholder for the official Paystack QR code"
+                >
+                  <span
+                    class="paystack-qr-placeholder-mark"
+                    aria-hidden="true"
+                    >₦</span
+                  >
+                  <span>Paystack QR code will be added here</span>
                 </div>
               </div>
             </div>
@@ -672,6 +931,15 @@
                 <a href="mailto:pathfinderfoundation2021@gmail.com"
                   >pathfinderfoundation2021@gmail.com</a
                 >
+                <br />
+                or WhatsApp us at
+                <a
+                  href="https://wa.me/2348028940144"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp Pathfinder at +234 802 894 0144"
+                  >+234 802 894 0144</a
+                >.
               </p>
             </div>
           </div>
