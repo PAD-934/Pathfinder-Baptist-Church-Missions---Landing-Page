@@ -43,7 +43,6 @@
           <a href="#contact">Contact</a>
           <button class="btn btn-gold btn-sm" id="giveNowNav">Give Now</button>
         </nav>
-
       </div>
     </header>
 
@@ -180,7 +179,6 @@
               >Meet Our Missionaries</a
             >
           </div>
-
         </div>
       </section>
 
@@ -188,7 +186,7 @@
       <div class="stats-bar">
         <div class="stats-inner">
           <div class="stat">
-            <div class="stat-num gold-text">36</div>
+            <div class="stat-num gold-text" id="missionaryCardTotal">34</div>
             <div class="stat-label">Missionary &amp; Family Cards</div>
             <div class="stat-sub">prayer and ministry support resources</div>
           </div>
@@ -495,7 +493,9 @@
           </div>
 
           <div class="give-country-picker" id="giveCountryPicker">
-            <h2 class="give-country-picker-title">Where are you giving from?</h2>
+            <h2 class="give-country-picker-title">
+              Where are you giving from?
+            </h2>
             <button
               class="give-country-option"
               type="button"
@@ -611,178 +611,185 @@
           <div class="tab-panel active" id="tab-intl">
             <div class="intl-payment-options">
               <div class="give-card">
-              <div class="give-card-header">
-                <img
-                  class="give-icon remitly-logo"
-                  src="Pictures/Remitlylogo.png"
-                  alt="Remitly"
-                />
-                <div>
-                  <h3>Send via Remitly</h3>
-                  <p class="muted-sm">trusted by millions worldwide.</p>
+                <div class="give-card-header">
+                  <img
+                    class="give-icon remitly-logo"
+                    src="Pictures/Remitlylogo.png"
+                    alt="Remitly"
+                  />
+                  <div>
+                    <h3>Send via Remitly</h3>
+                    <p class="muted-sm">trusted by millions worldwide.</p>
+                  </div>
+                </div>
+
+                <div class="steps">
+                  <div class="step">
+                    <div class="step-num">01</div>
+                    <div>
+                      <div class="step-title">Download Remitly</div>
+                      <div class="step-body remitly-mobile-prompt">
+                        Choose the option that works best for your device:
+                      </div>
+                      <div class="step-body remitly-desktop-prompt">
+                        Open Remitly securely in a new browser tab:
+                      </div>
+                      <div
+                        class="remitly-links"
+                        aria-label="Open or download Remitly"
+                      >
+                        <a
+                          class="remitly-link"
+                          href="https://www.remitly.com/"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Open Remitly website</a
+                        >
+                        <a
+                          class="remitly-link remitly-app-link"
+                          href="https://apps.apple.com/us/app/remitly-send-money-transfer/id674258465"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Download for iPhone or iPad</a
+                        >
+                        <a
+                          class="remitly-link remitly-app-link"
+                          href="https://play.google.com/store/apps/details?id=com.remitly.androidapp"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          >Get the Android app</a
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">02</div>
+                    <div>
+                      <div class="step-title">Create Your Account</div>
+                      <div class="step-body">
+                        Sign up free. Verification takes only 2–3 minutes and is
+                        completely secure.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">03</div>
+                    <div>
+                      <div class="step-title">Choose Nigeria</div>
+                      <div class="step-body">
+                        Select Nigeria as the destination country and choose
+                        "Bank Deposit" as the delivery method.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">04</div>
+                    <div>
+                      <div class="step-title">Enter Recipient Details</div>
+                      <div class="step-body">
+                        Use the bank account details provided below for
+                        Pathfinder Baptist Missions.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="step">
+                    <div class="step-num">05</div>
+                    <div>
+                      <div class="step-title">Complete Your Gift</div>
+                      <div class="step-body">
+                        Review the amount, confirm, and send. Your support
+                        reaches us within minutes to a few hours.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="bank-box">
+                  <div class="bank-box-title">🏦 Recipient Bank Details</div>
+                  <div class="bank-row">
+                    <span>Account Name</span><span>Pathfinder Association</span>
+                  </div>
+                  <div class="bank-row">
+                    <span>Bank</span><span>UBA — United Bank for Africa</span>
+                  </div>
+                  <div class="bank-row">
+                    <span>Account Number</span
+                    ><span class="bank-account-value"
+                      >2154004510
+                      <button
+                        class="copy-account-number"
+                        type="button"
+                        data-copy-account-number="2154004510"
+                        aria-label="Copy UBA account number"
+                      >
+                        <svg
+                          class="account-copy-icon"
+                          width="15"
+                          height="15"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="1.8"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <rect x="8" y="8" width="12" height="12" rx="2" />
+                          <path
+                            d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"
+                          />
+                        </svg>
+                        <svg
+                          class="account-copied-icon"
+                          width="15"
+                          height="15"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          viewBox="0 0 24 24"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="m5 12 4 4L19 6"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                        <span class="account-copy-label">Copy</span>
+                      </button>
+                      <span
+                        class="account-copy-status"
+                        aria-live="polite"
+                      ></span>
+                    </span>
+                  </div>
+                  <div class="bank-row no-border">
+                    <span>Country</span><span>Nigeria</span>
+                  </div>
                 </div>
               </div>
 
-              <div class="steps">
-                <div class="step">
-                  <div class="step-num">01</div>
+              <div class="give-card paystack-card">
+                <div class="give-card-header">
+                  <div class="give-icon paystack-icon" aria-hidden="true">
+                    ₦
+                  </div>
                   <div>
-                    <div class="step-title">Download Remitly</div>
-                    <div class="step-body remitly-mobile-prompt">
-                      Choose the option that works best for your device:
-                    </div>
-                    <div class="step-body remitly-desktop-prompt">
-                      Open Remitly securely in a new browser tab:
-                    </div>
-                    <div class="remitly-links" aria-label="Open or download Remitly">
-                      <a
-                        class="remitly-link"
-                        href="https://www.remitly.com/"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Open Remitly website</a
-                      >
-                      <a
-                        class="remitly-link remitly-app-link"
-                        href="https://apps.apple.com/us/app/remitly-send-money-transfer/id674258465"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Download for iPhone or iPad</a
-                      >
-                      <a
-                        class="remitly-link remitly-app-link"
-                        href="https://play.google.com/store/apps/details?id=com.remitly.androidapp"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        >Get the Android app</a
-                      >
-                    </div>
+                    <h3>Give with Paystack</h3>
+                    <p class="muted-sm">
+                      Scan the official Paystack QR code to give.
+                    </p>
                   </div>
                 </div>
-                <div class="step">
-                  <div class="step-num">02</div>
-                  <div>
-                    <div class="step-title">Create Your Account</div>
-                    <div class="step-body">
-                      Sign up free. Verification takes only 2–3 minutes and is
-                      completely secure.
-                    </div>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-num">03</div>
-                  <div>
-                    <div class="step-title">Choose Nigeria</div>
-                    <div class="step-body">
-                      Select Nigeria as the destination country and choose "Bank
-                      Deposit" as the delivery method.
-                    </div>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-num">04</div>
-                  <div>
-                    <div class="step-title">Enter Recipient Details</div>
-                    <div class="step-body">
-                      Use the bank account details provided below for Pathfinder
-                      Baptist Missions.
-                    </div>
-                  </div>
-                </div>
-                <div class="step">
-                  <div class="step-num">05</div>
-                  <div>
-                    <div class="step-title">Complete Your Gift</div>
-                    <div class="step-body">
-                      Review the amount, confirm, and send. Your support reaches
-                      us within minutes to a few hours.
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="bank-box">
-                <div class="bank-box-title">🏦 Recipient Bank Details</div>
-                <div class="bank-row">
-                  <span>Account Name</span
-                  ><span>Pathfinder Association</span>
-                </div>
-                <div class="bank-row">
-                  <span>Bank</span><span>UBA — United Bank for Africa</span>
-                </div>
-                <div class="bank-row">
-                  <span>Account Number</span
-                  ><span class="bank-account-value"
-                    >2154004510
-                    <button
-                      class="copy-account-number"
-                      type="button"
-                      data-copy-account-number="2154004510"
-                      aria-label="Copy UBA account number"
-                    >
-                      <svg
-                        class="account-copy-icon"
-                        width="15"
-                        height="15"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.8"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <rect x="8" y="8" width="12" height="12" rx="2" />
-                        <path
-                          d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"
-                        />
-                      </svg>
-                      <svg
-                        class="account-copied-icon"
-                        width="15"
-                        height="15"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                        viewBox="0 0 24 24"
-                        aria-hidden="true"
-                      >
-                        <path
-                          d="m5 12 4 4L19 6"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                      <span class="account-copy-label">Copy</span>
-                    </button>
-                    <span class="account-copy-status" aria-live="polite"></span>
-                  </span>
-                </div>
-                <div class="bank-row no-border">
-                  <span>Country</span><span>Nigeria</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="give-card paystack-card">
-              <div class="give-card-header">
-                <div class="give-icon paystack-icon" aria-hidden="true">₦</div>
-                <div>
-                  <h3>Give with Paystack</h3>
-                  <p class="muted-sm">
-                    Scan the official Paystack QR code to give.
-                  </p>
-                </div>
-              </div>
-              <div
-                class="paystack-qr-placeholder"
-                role="img"
-                aria-label="Placeholder for the official Paystack QR code"
-              >
-                <span class="paystack-qr-placeholder-mark" aria-hidden="true"
-                  >₦</span
+                <div
+                  class="paystack-qr-placeholder"
+                  role="img"
+                  aria-label="Placeholder for the official Paystack QR code"
                 >
-                <span>Paystack QR code will be added here</span>
+                  <span class="paystack-qr-placeholder-mark" aria-hidden="true"
+                    >₦</span
+                  >
+                  <span>Paystack QR code will be added here</span>
+                </div>
               </div>
-            </div>
             </div>
 
             <div class="info-note">
@@ -886,7 +893,10 @@
                         </svg>
                         <span class="account-copy-label">Copy</span>
                       </button>
-                      <span class="account-copy-status" aria-live="polite"></span>
+                      <span
+                        class="account-copy-status"
+                        aria-live="polite"
+                      ></span>
                     </div>
                   </div>
                 </div>
@@ -902,9 +912,7 @@
                   role="img"
                   aria-label="Placeholder for the official Paystack QR code"
                 >
-                  <span
-                    class="paystack-qr-placeholder-mark"
-                    aria-hidden="true"
+                  <span class="paystack-qr-placeholder-mark" aria-hidden="true"
                     >₦</span
                   >
                   <span>Paystack QR code will be added here</span>
@@ -1152,6 +1160,30 @@
         </div>
       </div>
     </footer>
+
+    <button
+      class="scroll-progress"
+      id="scrollProgress"
+      type="button"
+      aria-label="Scroll to top"
+      aria-hidden="true"
+      tabindex="-1"
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle class="scroll-progress-track" cx="12" cy="12" r="10"></circle>
+        <circle class="scroll-progress-value" cx="12" cy="12" r="10"></circle>
+      </svg>
+      <svg class="scroll-progress-icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M12 19V5m-6 6 6-6 6 6"
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.8"
+        />
+      </svg>
+    </button>
 
     <script src="script.js"></script>
   </body>

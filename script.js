@@ -26,9 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
     const pauseReasons = new Set();
     const savedTabIndexes = new WeakMap();
-    const reducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)",
-    );
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let activeMissionSlide = 0;
     let missionTimer;
     let isCarouselVisible = !("IntersectionObserver" in window);
@@ -65,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         slide
           .querySelectorAll(
-            'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]',
+            "a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]",
           )
           .forEach((element) => {
             if (isInactive) {
@@ -370,15 +368,6 @@ document.addEventListener("DOMContentLoaded", () => {
       photo: "WhatsApp Image 2026-09-01 at 7.45.16 PM (1).jpeg",
     },
     {
-      id: 21,
-      name: "Abel Umaru Habila Family",
-      church: "Bishara Independent Baptist Church",
-      state: "Kaduna State",
-      location: "Gidan Kuli, Kaduna State",
-      phone: "07086068695",
-      photo: "WhatsApp Image 2026-09-01 at 7.45.16 PM (2).jpeg",
-    },
-    {
       id: 22,
       name: "Samson Adams Family",
       church: "Spring Valley Baptist Church",
@@ -469,15 +458,6 @@ document.addEventListener("DOMContentLoaded", () => {
       photo: "WhatsApp Image 2026-09-01 at 7.45.19 PM (2).jpeg",
     },
     {
-      id: 32,
-      name: "Pastor Olayemi Oladibu Family",
-      church: "Radiant Baptist Church",
-      state: "Oyo State",
-      location: "Eruwa City, Oyo State",
-      phone: "+234 (0) 905 691 9036",
-      photo: "WhatsApp Image 2026-09-01 at 7.45.19 PM.jpeg",
-    },
-    {
       id: 33,
       name: "Ajibade Family",
       church: "All Grace Independent Baptist Church",
@@ -514,6 +494,11 @@ document.addEventListener("DOMContentLoaded", () => {
       photo: "WhatsApp Image 2026-09-16 at 7.53.28 PM.jpeg",
     },
   ];
+
+  const missionaryCardTotal = document.getElementById("missionaryCardTotal");
+  if (missionaryCardTotal) {
+    missionaryCardTotal.textContent = String(MISSIONARIES.length);
+  }
 
   const grid = document.getElementById("missionaryGrid");
   const locationFilter = document.getElementById("locationFilter");
@@ -672,7 +657,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const copyLabel = button.querySelector(".missionary-copy-label");
     const phoneNumber = button.dataset.copyPhone;
     if (!phoneNumber || !status || !indicator || !copyLabel) {
-      console.error("Unable to copy phone number: card controls are incomplete.");
+      console.error(
+        "Unable to copy phone number: card controls are incomplete.",
+      );
       return;
     }
 
@@ -707,7 +694,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const label = button.querySelector(".account-copy-label");
     const status = button.parentElement?.querySelector(".account-copy-status");
     if (!accountNumber || !label || !status) {
-      console.error("Unable to copy UBA account number: copy controls are incomplete.");
+      console.error(
+        "Unable to copy UBA account number: copy controls are incomplete.",
+      );
       return;
     }
 
@@ -783,10 +772,46 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const navbar = document.getElementById("navbar");
-  const onScroll = () =>
+  const scrollProgress = document.getElementById("scrollProgress");
+  const scrollProgressValue = scrollProgress?.querySelector(
+    ".scroll-progress-value",
+  );
+  const scrollProgressCircumference = 2 * Math.PI * 10;
+
+  function updateScrollProgress() {
+    const scrollableHeight =
+      document.documentElement.scrollHeight - window.innerHeight;
+    const progress =
+      scrollableHeight > 0
+        ? Math.min(Math.max(window.scrollY / scrollableHeight, 0), 1)
+        : 0;
+    const isVisible = window.scrollY > 160;
+
+    if (scrollProgressValue) {
+      scrollProgressValue.style.strokeDashoffset = String(
+        scrollProgressCircumference * (1 - progress),
+      );
+    }
+    scrollProgress?.classList.toggle("is-visible", isVisible);
+    scrollProgress?.setAttribute("aria-hidden", String(!isVisible));
+    if (scrollProgress) scrollProgress.tabIndex = isVisible ? 0 : -1;
+  }
+
+  const onScroll = () => {
     navbar?.classList.toggle("scrolled", window.scrollY > 48);
+    updateScrollProgress();
+  };
   window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener("resize", updateScrollProgress);
   onScroll();
+
+  scrollProgress?.addEventListener("click", () => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
 
   const giveCloseButton = giveSection?.querySelector(".mobile-give-close");
   const giveBackButton = giveSection?.querySelector(".mobile-give-back");
@@ -875,7 +900,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobileNav = document.querySelector(".mobile-bottom-nav");
   let updateMobileNavSelection = () => {};
   if (mobileNav) {
-    const mobileNavSections = ["home", "mission", "missionaries", "pray", "contact"]
+    const mobileNavSections = [
+      "home",
+      "mission",
+      "missionaries",
+      "pray",
+      "contact",
+    ]
       .map((id) => document.getElementById(id))
       .filter(Boolean);
 
@@ -917,14 +948,11 @@ document.addEventListener("DOMContentLoaded", () => {
     closeImageDialog();
     giveSection?.scrollIntoView({ behavior: "smooth" });
   }
-  [
-    "giveNowNav",
-    "giveNowHero",
-    "giveNowFooter",
-    "giveNowMobile",
-  ].forEach((id) => {
-    document.getElementById(id)?.addEventListener("click", scrollToGive);
-  });
+  ["giveNowNav", "giveNowHero", "giveNowFooter", "giveNowMobile"].forEach(
+    (id) => {
+      document.getElementById(id)?.addEventListener("click", scrollToGive);
+    },
+  );
   giveCloseButton?.addEventListener("click", closeMobileGive);
   giveSection?.addEventListener("click", (event) => {
     if (event.target === giveSection) closeMobileGive();
