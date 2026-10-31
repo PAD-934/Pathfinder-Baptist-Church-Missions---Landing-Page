@@ -2920,13 +2920,16 @@ button {
     grid-template-columns:
       minmax(0, 1fr)
       minmax(0, 1fr)
-      46px
+      64px
       minmax(0, 1.35fr)
       minmax(0, 1fr);
     padding-right: 6px;
     padding-left: 6px;
   }
   .mobile-bottom-support {
-    width: 42px;
+    width: 58px;
+    padding: 0;
+    white-space: nowrap;
+    overflow-wrap: normal;
   }
 }
