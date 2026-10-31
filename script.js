@@ -397,7 +397,7 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       id: 25,
       name: "Taiwo Ojo Family",
-      church: "First Independent Baptist Church of Ijokodo",
+      church: "Independent Baptist Church of Ijokodo",
       state: "Oyo State",
       location: "Ijokodo, Ibadan, Oyo State",
       phone: "+234 (0) 703 808 5652",
@@ -440,15 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
       photo: "WhatsApp Image 2026-09-01 at 7.45.18 PM.jpeg",
     },
     {
-      id: 30,
-      name: "Thomas Yohanna Family",
-      church: "Victory Independent Baptist Church",
-      state: "Bauchi State",
-      location: "Bauchi State",
-      phone: "+234 (0) 813 670 7717",
-      photo: "WhatsApp Image 2026-09-01 at 7.45.19 PM (1).jpeg",
-    },
-    {
       id: 31,
       name: "Bedolph Abandy Family",
       church: "Independent Baptist Church of Makoko",
@@ -484,20 +475,21 @@ document.addEventListener("DOMContentLoaded", () => {
       phone: "+2349067752012",
       photo: "WhatsApp Image 2026-09-16 at 7.53.12 PM.jpeg",
     },
-    {
-      id: 36,
-      name: "Moses Nyiku Family",
-      church: "Praise & Glory Baptist Church",
-      state: "Benue State",
-      location: "Makurdi, Benue State",
-      phone: "07067916105",
-      photo: "WhatsApp Image 2026-09-16 at 7.53.28 PM.jpeg",
-    },
   ];
 
   const missionaryCardTotal = document.getElementById("missionaryCardTotal");
   if (missionaryCardTotal) {
     missionaryCardTotal.textContent = String(MISSIONARIES.length);
+  }
+
+  const missionaryStateTotal = document.getElementById("missionaryStateTotal");
+  if (missionaryStateTotal) {
+    const representedStates = new Set(
+      MISSIONARIES.map((missionary) => missionary.state).filter(
+        (state) => state !== "Location not listed",
+      ),
+    );
+    missionaryStateTotal.textContent = String(representedStates.size);
   }
 
   const grid = document.getElementById("missionaryGrid");
